@@ -1,3 +1,16 @@
+## STRICT RULE: Template gate (read before writing any email)
+
+Before outputting ANY email copy, you must:
+
+1. Read `stage-6-copywriting/cold-email-templates/cold-email-templates-library.md`.
+2. Recommend exactly 3 to 4 templates from that library that fit the user's company, ICP, and offer, with one line on why each fits.
+3. For each recommended template, show a short sample of what it would sound like written for the user's company (real company name, real offer, no placeholders left unfilled).
+4. Wait for the user to pick one (or approve a blend) before writing the full sequence.
+
+Do not skip this gate, even if the user asks for copy directly. If they insist, state which template you used and why in one line, then proceed.
+
+Also obey `stage-6-copywriting/no-em-dashes/SKILL.md`: never output em dashes or en dashes.
+
 ---
 name: campaign-copywriting
 description: Creates cold email copy through a stepwise confirmation process. Use when writing email campaigns, given a campaign strategy document, website, or client context. Confirms direction at each step before outputting final copy.

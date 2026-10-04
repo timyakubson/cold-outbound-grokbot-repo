@@ -72,3 +72,10 @@ provider-routing logic, including StoreLeads (e-commerce) and Outscraper
 
 Built alongside the companion video. `campaign-copywriting` is carried over
 close to untouched since it's provider-agnostic and didn't need a swap.
+
+## Writing rules that apply everywhere
+
+- **No em dashes or en dashes in any output.** Enforced by `stage-6-copywriting/no-em-dashes`
+  (adapted from [skill-deslop](https://github.com/stephenturner/skill-deslop), MIT).
+- **Template gate before email copy.** `campaign-copywriting` requires 3-4 recommended templates
+  from `stage-6-copywriting/cold-email-templates/` before writing any email.
