@@ -20,7 +20,7 @@ import {
 } from "./lib";
 
 maybeHelp(`
-score-batch.ts — AI qualification at scale. Scores companies against a tuned ICP prompt.
+score-batch.ts, AI qualification at scale. Scores companies against a tuned ICP prompt.
 
   npx tsx score-batch.ts --csv=candidates.csv --prompt-file=icp-prompt.txt \\
     [--out=scored.csv] [--model=gpt-5-nano] [--concurrency=8] [--scrape] [--limit=N] [--resume]
@@ -45,7 +45,7 @@ const icpPrompt = readFileSync(promptFile, "utf8");
 const apiKey = process.env.OPENAI_API_KEY_NANO ?? requireEnv("OPENAI_API_KEY");
 
 // Hard per-row deadline (incl. scrape). A single hung fetch/API socket otherwise
-// stalls the whole batch at 99.99% done — the watchdog then kills the stage even
+// stalls the whole batch at 99.99% done, the watchdog then kills the stage even
 // though only one row is stuck. 120s covers a slow scrape + 3 API attempts.
 const ROW_DEADLINE_MS = Number(args["row-timeout"] ?? 120_000);
 function withTimeout<T>(p: Promise<T>, ms: number, onTimeout: () => T): Promise<T> {
@@ -132,7 +132,7 @@ async function main() {
       appendFileSync(streamPath, STREAM_COLS.map((c) => csvEscape((r as any)[c])).join(",") + "\n");
       return r;
     });
-    // collapse duplicate domain rows (retry appended a second row) — keep last
+    // collapse duplicate domain rows (retry appended a second row), keep last
     const byDomain = new Map<string, Record<string, string>>();
     for (const r of readCsv(streamPath)) byDomain.set(r.domain, r);
     writeFileSync(streamPath, STREAM_COLS.join(",") + "\n" + [...byDomain.values()].map((r) => STREAM_COLS.map((c) => csvEscape(r[c])).join(",")).join("\n") + "\n");
@@ -141,7 +141,7 @@ async function main() {
   writeCsv(out, scored);
   const failed = scored.filter((r) => !r.scored).length;
   console.log(`\nDone: ${scored.filter((r) => r.qualified === true).length}/${rows.length} qualified, ${failed} scoring failures → ${out}`);
-  if (failed > rows.length * 0.2) console.error("WARNING: >20% scoring failures — check API key/model before trusting this run.");
+  if (failed > rows.length * 0.2) console.error("WARNING: >20% scoring failures, check API key/model before trusting this run.");
 }
 
 main().then(() => process.exit(0)).catch((e) => { console.error(e); process.exit(1); });

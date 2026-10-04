@@ -1,13 +1,13 @@
 ---
 name: smartlead-campaign-upload-public
-description: Upload a CSV of leads + a variants YAML (produced by /campaign-copywriting) to Smartlead as a DRAFT campaign. Handles tag-scoped inbox selection, A/B/C variant assembly, custom field mapping, schedule config, and batch lead upload. ALWAYS creates in DRAFT — you review in Smartlead UI and hit Start manually. Use after /campaign-copywriting, just before the campaign goes live.
+description: Upload a CSV of leads + a variants YAML (produced by /campaign-copywriting) to Smartlead as a DRAFT campaign. Handles tag-scoped inbox selection, A/B/C variant assembly, custom field mapping, schedule config, and batch lead upload. ALWAYS creates in DRAFT, you review in Smartlead UI and hit Start manually. Use after /campaign-copywriting, just before the campaign goes live.
 ---
 
 # Smartlead Campaign Upload
 
 Takes a `variants.yaml` (written by `/campaign-copywriting`) and a `leads.csv` (from your list-building skills) and creates a DRAFT campaign in Smartlead. You review the result in the Smartlead UI and press Start manually.
 
-**This skill does NOT ship any email copy.** Copy comes from `/campaign-copywriting`. This skill is the mechanical upload layer — API calls only.
+**This skill does NOT ship any email copy.** Copy comes from `/campaign-copywriting`. This skill is the mechanical upload layer, API calls only.
 
 ## Why DRAFT only
 
@@ -17,7 +17,7 @@ Cold email launches should never happen from a script. You hit Start in the Smar
 - Lead count and a few random lead rows
 - Schedule (timezone + hours + throttle)
 
-The script sets all of this up in DRAFT so the review is trivial — verify and click Start.
+The script sets all of this up in DRAFT so the review is trivial, verify and click Start.
 
 ## Inputs
 
@@ -37,7 +37,7 @@ Optional columns (passed through to Smartlead as custom fields):
 - `value_line` (AI-generated value mapping)
 - `cta_line` (AI-generated CTA angle)
 
-Additional AI variable columns produced by `/campaign-copywriting` or `/personalization-subagent-pattern` — named fields only. The script does NOT accept arbitrary columns; this is intentional. If you need to add a field, update this skill.
+Additional AI variable columns produced by `/campaign-copywriting` or `/personalization-subagent-pattern`, named fields only. The script does NOT accept arbitrary columns; this is intentional. If you need to add a field, update this skill.
 
 ### `variants.yaml`
 
@@ -69,8 +69,8 @@ Campaign is in DRAFT. Review + Start:
 ## Script flow
 
 1. Load env (`SMARTLEAD_API_KEY` required)
-2. Parse `leads.csv` — validate required columns, count rows
-3. Parse `variants.yaml` — built-in minimal parser (~30 lines, no external dep)
+2. Parse `leads.csv`, validate required columns, count rows
+3. Parse `variants.yaml`, built-in minimal parser (~30 lines, no external dep)
 4. `POST /campaigns/create` → get campaignId
 5. `POST /campaigns/{id}/sequences` with all A/B/C variants
 6. Query `/email-accounts?limit=100`, filter by `tag`, sort by `daily_sent_count` ASC (LRU), attach top N
@@ -99,14 +99,14 @@ After Start:
 
 ## Related skills
 
-- `/campaign-copywriting` — produces `variants.yaml`
-- `/smartlead-inbox-manager` — required prep: inboxes must be tagged `active` before upload
-- `/list-quality-scorecard` — dedupe + verify leads.csv before upload
-- `/positive-reply-scoring` — run 21 days post-launch to measure
-- `/cold-email-weekly-rhythm` — operational cadence after launch
+- `/campaign-copywriting`, produces `variants.yaml`
+- `/smartlead-inbox-manager`, required prep: inboxes must be tagged `active` before upload
+- `/list-quality-scorecard`, dedupe + verify leads.csv before upload
+- `/positive-reply-scoring`, run 21 days post-launch to measure
+- `/cold-email-weekly-rhythm`, operational cadence after launch
 
 ## Files
 
-- `scripts/upload.ts` — the upload script
-- `references/variants-schema.yaml` — blank schema reference (no example copy content)
-- `references/leads-csv-schema.md` — column spec
+- `scripts/upload.ts`, the upload script
+- `references/variants-schema.yaml`, blank schema reference (no example copy content)
+- `references/leads-csv-schema.md`, column spec

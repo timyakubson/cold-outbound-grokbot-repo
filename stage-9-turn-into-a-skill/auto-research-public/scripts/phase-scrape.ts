@@ -77,7 +77,7 @@ async function main() {
 
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, JSON.stringify({ domain: clean, pages }, null, 2));
-  console.error(`\nWrote ${out} — ${pages.length} pages`);
+  console.error(`\nWrote ${out}, ${pages.length} pages`);
 }
 
 main().catch((e) => {

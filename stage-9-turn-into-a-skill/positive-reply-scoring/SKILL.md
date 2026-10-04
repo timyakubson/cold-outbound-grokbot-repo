@@ -1,6 +1,6 @@
 ---
 name: positive-reply-scoring
-description: Pulls replies from a Smartlead campaign, classifies each as positive/neutral/negative/OOO/bounce/unsubscribe using Claude, and reports the positive reply rate — the north-star metric for cold email. Use when the user wants to know if a campaign is actually working (not just getting replies, but getting the RIGHT replies). Triggers on "score my replies", "how's campaign X doing", "positive reply rate", "is this campaign working".
+description: Pulls replies from a Smartlead campaign, classifies each as positive/neutral/negative/OOO/bounce/unsubscribe using Claude, and reports the positive reply rate, the north-star metric for cold email. Use when the user wants to know if a campaign is actually working (not just getting replies, but getting the RIGHT replies). Triggers on "score my replies", "how's campaign X doing", "positive reply rate", "is this campaign working".
 ---
 
 # Positive Reply Scoring
@@ -30,7 +30,7 @@ Every reply is classified into exactly one bucket:
 | `positive_interested` | "Yes, tell me more" or booked a meeting | ✅ |
 | `positive_soft` | "Send more info" / "reach out in Q3" / info request | ✅ |
 | `positive_referral` | "Not me, but talk to X" | ✅ (referral is high-value) |
-| `neutral_question` | Clarifying question, no commitment yet | ❌ (optional — some score as half) |
+| `neutral_question` | Clarifying question, no commitment yet | ❌ (optional, some score as half) |
 | `negative_notnow` | "Not right now, maybe later" | ❌ |
 | `negative_notfit` | "Not a fit" / "we don't need this" | ❌ |
 | `negative_hostile` | Angry reply, complaint, report | ❌ (and track separately as risk signal) |
@@ -114,7 +114,7 @@ npx tsx scripts/aggregate-scores.ts --replies=/tmp/classified-replies.json --cam
 Output (to stdout + optional `--out`):
 
 ```
-Campaign 12345 — Positive Reply Scoring
+Campaign 12345, Positive Reply Scoring
 
 Total sent:              5,284
 Total replies:              212 (4.01%)
@@ -156,10 +156,10 @@ This builds a history so you can trend positive reply rate over campaigns.
 
 At the end, surface:
 
-- **Positive replies that need a human response** — list the top 10 `positive_interested` leads and their reply bodies. The user should reply to these within 30 seconds of seeing this report.
-- **Referrals that need follow-up** — `positive_referral` labels. Add the referred contacts to a new outreach list.
-- **Hostile flags** — any `negative_hostile` replies. Read them manually; consider pausing the inbox if someone is genuinely angry.
-- **Unsubscribes** — confirm they're globally suppressed (Smartlead does this automatically, but double-check).
+- **Positive replies that need a human response**, list the top 10 `positive_interested` leads and their reply bodies. The user should reply to these within 30 seconds of seeing this report.
+- **Referrals that need follow-up**, `positive_referral` labels. Add the referred contacts to a new outreach list.
+- **Hostile flags**, any `negative_hostile` replies. Read them manually; consider pausing the inbox if someone is genuinely angry.
+- **Unsubscribes**, confirm they're globally suppressed (Smartlead does this automatically, but double-check).
 
 ## When to use this skill
 
@@ -174,7 +174,7 @@ At the end, surface:
 - **Exclude OOO + bounce from denominators.** They're not real replies. The script does this automatically.
 - **Smartlead's built-in AI categorization** exists but is less controllable. This skill uses Claude directly for transparency and prompt-tunable classification.
 - **Small samples lie.** Below ~500 sent, the positive reply rate has too much noise. Wait for more volume before declaring winners/losers.
-- **Classify only FIRST reply per lead.** If a lead replied, you replied, they replied again — only the first reply is the signal. Later messages are the conversation, not the scoring.
+- **Classify only FIRST reply per lead.** If a lead replied, you replied, they replied again, only the first reply is the signal. Later messages are the conversation, not the scoring.
 
 ## What to do next
 
@@ -186,11 +186,11 @@ At the end, surface:
 
 ## Related skills
 
-- `/experiment-design` — uses positive reply rate as the success metric
-- `/email-deliverability-audit` — if hostile + unsub are elevated, run this next
+- `/experiment-design`, uses positive reply rate as the success metric
+- `/email-deliverability-audit`, if hostile + unsub are elevated, run this next
 - `/cold-email-starter-kit` → `10-reply-handling.md` for what to do with the positive replies once flagged
 
 ## Scripts
 
-- `scripts/fetch-campaign-replies.ts` — pulls replies via Smartlead API
-- `scripts/aggregate-scores.ts` — computes rates from classified JSON
+- `scripts/fetch-campaign-replies.ts`, pulls replies via Smartlead API
+- `scripts/aggregate-scores.ts`, computes rates from classified JSON

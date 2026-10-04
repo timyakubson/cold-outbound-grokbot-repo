@@ -275,7 +275,7 @@ const { results, summary } = await service.searchWithStateSplitting(filters, {
 
 ## Example: Recently Raised Series A
 
-Target marketing leaders at US software companies (50–200 employees) that raised
+Target marketing leaders at US software companies (50-200 employees) that raised
 Series A in the last 180 days:
 
 ```typescript
@@ -321,11 +321,11 @@ PROSPEO_API_KEY=your_api_key_here
 
 ## What to do next
 
-This is a reference skill — no direct next step. Used by `/prospeo-full-export` and `/auto-research-public` to build the actual search.
+This is a reference skill, no direct next step. Used by `/prospeo-full-export` and `/auto-research-public` to build the actual search.
 
 Return to the skill that sent you here.
 
 ## Related skills
 
-- `/prospeo-full-export` — the main consumer of this reference
-- `/auto-research-public` — also uses Prospeo search via phase-prospeo.ts
+- `/prospeo-full-export`, the main consumer of this reference
+- `/auto-research-public`, also uses Prospeo search via phase-prospeo.ts

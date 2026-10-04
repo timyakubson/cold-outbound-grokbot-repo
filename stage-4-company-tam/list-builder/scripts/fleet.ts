@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * fleet.ts — read-only lane observability (WS12, 2026-07-14).
+ * fleet.ts, read-only lane observability (WS12, 2026-07-14).
  *
  *     npx tsx fleet.ts                 # scan ~/output/list-builder/lanes/*
  *     npx tsx fleet.ts --root=/abs/dir # scan a different lanes root
@@ -10,7 +10,7 @@
  * stream file, minutes since anything in the run dir was last written, whether
  * a snowball is in flight, and READY / NOT READY (from summary.md line 1).
  *
- * ZERO side effects — never writes, never touches a run dir. Safe to run against
+ * ZERO side effects, never writes, never touches a run dir. Safe to run against
  * lanes with live run-lane / snowball processes.
  */
 import { readFileSync, existsSync, readdirSync, statSync } from "fs";
@@ -74,11 +74,11 @@ function scanLane(dir: string): Row | null {
   const ns = newestStream(dir);
   const idleMs = Date.now() - latestMtime(dir);
   const snowball = readdirSync(dir).some((f) => /^snowball-r\d+\.csv$/.test(f) || f === "swept-ledger.ndjson");
-  let ready = "—";
+  let ready = ", ";
   const summ = join(dir, "summary.md");
   if (existsSync(summ)) {
     const l1 = readFileSync(summ, "utf8").split("\n")[0] ?? "";
-    ready = l1.startsWith("# READY") ? "READY" : l1.startsWith("# NOT READY") ? "NOT READY" : "—";
+    ready = l1.startsWith("# READY") ? "READY" : l1.startsWith("# NOT READY") ? "NOT READY" : ", ";
   }
   return { lane, stage, status, rows: ns?.rows ?? -1, idle_min: Math.round(idleMs / 60000), snowball, ready };
 }

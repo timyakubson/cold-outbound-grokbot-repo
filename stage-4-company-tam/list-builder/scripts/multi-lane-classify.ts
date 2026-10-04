@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * multi-lane-classify.ts — union N lanes' candidate pools and label every unique
+ * multi-lane-classify.ts, union N lanes' candidate pools and label every unique
  * company in ONE nano pass (WS1, 2026-07-14).
  *
  *     npx tsx multi-lane-classify.ts --lanes=a.json,b.json,c.json \
@@ -14,7 +14,7 @@
  * (or "none"). Per-lane candidate CSVs are written for consumption as
  * `extra_candidates` in that lane's lane.json.
  *
- * This is ADDITIVE — it does not touch run-lane's default per-lane flow. Use it
+ * This is ADDITIVE, it does not touch run-lane's default per-lane flow. Use it
  * to pre-partition a shared universe before running each lane, or to reconcile
  * overlap after the fact.
  *
@@ -104,7 +104,7 @@ async function main() {
     const cand = join(l.runDir, "candidates.csv");
     const pull = join(l.runDir, "pull-all.csv");
     const src = existsSync(cand) ? cand : existsSync(pull) ? pull : "";
-    if (!src) { console.error(`⚠️ lane "${l.label}": no candidates.csv/pull-all.csv in ${l.runDir} — contributes 0 to the union`); continue; }
+    if (!src) { console.error(`⚠️ lane "${l.label}": no candidates.csv/pull-all.csv in ${l.runDir}, contributes 0 to the union`); continue; }
     let added = 0;
     for (const r of readCsv(src)) {
       const d = normDomain(r.domain ?? r.website ?? "");
@@ -129,7 +129,7 @@ async function main() {
     const r = await classify(row);
     appendFileSync(streamPath, STREAM_COLS.map((c) => csvEscape((r as any)[c])).join(",") + "\n");
     tally[String((r as any).segment)] = (tally[String((r as any).segment)] ?? 0) + 1;
-    if (++n % 500 === 0) console.log(`  ${n}/${todo.length} — ${JSON.stringify(tally)}`);
+    if (++n % 500 === 0) console.log(`  ${n}/${todo.length}, ${JSON.stringify(tally)}`);
     return r;
   });
 

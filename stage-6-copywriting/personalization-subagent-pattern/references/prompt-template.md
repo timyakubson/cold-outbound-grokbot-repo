@@ -13,30 +13,30 @@ We sell: <ONE_SENTENCE_FROM_CLIENT_PROFILE>
 Our ICP: <ONE_SENTENCE_FROM_CLIENT_PROFILE>
 Our offer: <THE_CTA_OR_LEAD_MAGNET>
 Tone: <casual | formal | peer-to-peer>
-Copy variant: <A | B | C> — <VARIANT_ANGLE_DESCRIPTION>
+Copy variant: <A | B | C>, <VARIANT_ANGLE_DESCRIPTION>
 
 ## Fields to generate per lead
 
 Return these 3 fields for every lead in the batch:
 
-**situation_line** — one sentence, max 20 words, what you noticed about their specific company based on `company_description`. Should be concrete, not generic.
+**situation_line**, one sentence, max 20 words, what you noticed about their specific company based on `company_description`. Should be concrete, not generic.
 Good: "You're building one of the only self-serve APM tools in the Ruby ecosystem."
 Bad: "You have an interesting company."
 
-**value_line** — one sentence, max 20 words, connecting their situation to our offer.
+**value_line**, one sentence, max 20 words, connecting their situation to our offer.
 Good: "Most of our Ruby SaaS customers find their APM blind spots before they hit the first on-call page."
 Bad: "We can help you with APM."
 
-**cta_soft** — one sentence, max 15 words, soft ask that can be answered with Y/N.
+**cta_soft**, one sentence, max 15 words, soft ask that can be answered with Y/N.
 Good: "Worth a 10-min look at what we'd flag on your stack?"
 Bad: "Please schedule a meeting using this Calendly link."
 
 ## Rules
 
 1. NEVER fabricate facts. If you're not sure, be general but not false.
-2. NEVER use em dashes (—). Use periods or commas.
+2. NEVER use em dashes (, ). Use periods or commas.
 3. NEVER use: "leverage", "synergy", "ecosystem", "world-class", "cutting-edge", "solutions".
-4. NEVER start `situation_line` with "I noticed" — overused.
+4. NEVER start `situation_line` with "I noticed", overused.
 5. If a lead's `company_description` is missing or <20 chars, set all 3 fields to null and add `personalization_status: "skipped_thin_data"`.
 6. Do not output explanatory text outside the JSON.
 

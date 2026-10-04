@@ -24,10 +24,10 @@ v=spf1 include:<provider> ~all
 
 ### Strictness modifiers
 
-- `~all` (soft fail) — emails that fail get marked suspicious but usually still delivered. **Default for new domains.**
-- `-all` (hard fail) — emails that fail get rejected. **Only use after weeks of clean mail.**
-- `+all` — allows any sender. **NEVER use. Makes SPF useless.**
-- `?all` — neutral. Same as no SPF.
+- `~all` (soft fail), emails that fail get marked suspicious but usually still delivered. **Default for new domains.**
+- `-all` (hard fail), emails that fail get rejected. **Only use after weeks of clean mail.**
+- `+all`, allows any sender. **NEVER use. Makes SPF useless.**
+- `?all`, neutral. Same as no SPF.
 
 ### Verify
 ```bash
@@ -75,9 +75,9 @@ v=DMARC1; p=none; rua=mailto:dmarc@example.com
 
 ### Policy levels
 
-- `p=none` — monitor only. Failing emails still delivered. Reports sent to `rua=` address. **Start here.**
-- `p=quarantine` — failing emails go to spam. **Upgrade to this after 1-2 weeks of clean `rua=` reports.**
-- `p=reject` — failing emails bounced. **Strictest. Use only after 30+ days confirmed clean.**
+- `p=none`, monitor only. Failing emails still delivered. Reports sent to `rua=` address. **Start here.**
+- `p=quarantine`, failing emails go to spam. **Upgrade to this after 1-2 weeks of clean `rua=` reports.**
+- `p=reject`, failing emails bounced. **Strictest. Use only after 30+ days confirmed clean.**
 
 ### Additional tags
 
@@ -85,11 +85,11 @@ v=DMARC1; p=none; rua=mailto:dmarc@example.com
 v=DMARC1; p=quarantine; rua=mailto:dmarc@example.com; ruf=mailto:forensic@example.com; pct=100; adkim=r; aspf=r
 ```
 
-- `rua` — aggregate reports (daily summary). Set this.
-- `ruf` — forensic reports (per-failure detail). Optional, gets noisy.
-- `pct` — percentage of failing mail to apply policy to. Start at 100.
-- `adkim=r|s` — DKIM alignment mode. `r` = relaxed (subdomain OK), `s` = strict.
-- `aspf=r|s` — SPF alignment mode. Same as above.
+- `rua`, aggregate reports (daily summary). Set this.
+- `ruf`, forensic reports (per-failure detail). Optional, gets noisy.
+- `pct`, percentage of failing mail to apply policy to. Start at 100.
+- `adkim=r|s`, DKIM alignment mode. `r` = relaxed (subdomain OK), `s` = strict.
+- `aspf=r|s`, SPF alignment mode. Same as above.
 
 ### Verify
 ```bash
@@ -98,17 +98,17 @@ dig TXT _dmarc.example.com +short
 
 ## Checklist for a new domain
 
-1. **Day 0 — registration:** point nameservers to your sending provider (e.g., Zapmail)
-2. **Day 0-1 — DNS propagation:** wait 20 min - 48h for records to appear
-3. **Day 1 — verify all three:**
+1. **Day 0, registration:** point nameservers to your sending provider (e.g., Zapmail)
+2. **Day 0-1, DNS propagation:** wait 20 min - 48h for records to appear
+3. **Day 1, verify all three:**
    ```bash
    dig TXT example.com +short
    dig TXT default._domainkey.example.com +short
    dig TXT _dmarc.example.com +short
    ```
-4. **Day 1-14 — warmup:** DMARC `p=none`, SPF `~all`. Warm inboxes slowly.
-5. **Day 14 — tighten DMARC:** switch to `p=quarantine` if aggregate reports are clean.
-6. **Day 30+ — optional reject:** switch to `p=reject` if you're confident no legitimate mail will fail.
+4. **Day 1-14, warmup:** DMARC `p=none`, SPF `~all`. Warm inboxes slowly.
+5. **Day 14, tighten DMARC:** switch to `p=quarantine` if aggregate reports are clean.
+6. **Day 30+, optional reject:** switch to `p=reject` if you're confident no legitimate mail will fail.
 
 ## Common failure patterns
 
@@ -117,7 +117,7 @@ dig TXT _dmarc.example.com +short
 | SPF present but marked soft-fail in DMARC reports | SPF `include:` list missing your provider |
 | DKIM signature in email but DMARC still fails | From-domain doesn't match DKIM-signing domain (alignment issue) |
 | DMARC reports show failures from your own sending | DKIM selector moved or expired |
-| Emails landing in spam despite all 3 passing | Domain reputation issue — content/behavior, not auth |
+| Emails landing in spam despite all 3 passing | Domain reputation issue, content/behavior, not auth |
 | Brand-new domain, all auth fails | DNS propagation still in progress, wait 48h |
 
 ## How Zapmail handles this

@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * Blitz API — find contacts at companies by domain, write CSV.
+ * Blitz API, find contacts at companies by domain, write CSV.
  *
  * Usage:
  *   export BLITZ_API_KEY=xxx
@@ -193,7 +193,7 @@ async function main() {
 
   writeFileSync(args.out, toCsv(allRows));
   const withEmail = allRows.filter((r) => r.email).length;
-  console.error(`\nWrote ${args.out} — ${allRows.length} contacts (${withEmail} with email)`);
+  console.error(`\nWrote ${args.out}, ${allRows.length} contacts (${withEmail} with email)`);
 }
 
 main().catch((e) => {

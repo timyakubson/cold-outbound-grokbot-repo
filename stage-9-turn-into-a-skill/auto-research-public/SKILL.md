@@ -5,7 +5,7 @@ description: Autonomous cold email campaign launcher. Takes one target company d
 
 # Auto Research (Public)
 
-Automated end-to-end campaign launcher. Feed it one target company domain, get back a live Smartlead campaign with per-lead personalization — in about 20 minutes.
+Automated end-to-end campaign launcher. Feed it one target company domain, get back a live Smartlead campaign with per-lead personalization, in about 20 minutes.
 
 This is the beginner-friendly version of the GEX internal `auto-research-v2`. All state lives in local JSON files; no Supabase, no Trigger.dev.
 
@@ -31,7 +31,7 @@ Before running:
 
 ## The orchestration (Claude Code runs this)
 
-Unlike the other skills, this skill orchestrates through the Claude Code conversation itself — Claude does the reasoning (ICP generation, copy writing, personalization), and phase scripts do the heavy API I/O. This is the pattern from the GEX v2 internal.
+Unlike the other skills, this skill orchestrates through the Claude Code conversation itself, Claude does the reasoning (ICP generation, copy writing, personalization), and phase scripts do the heavy API I/O. This is the pattern from the GEX v2 internal.
 
 ### Phase 1: Scrape the target company
 
@@ -119,7 +119,7 @@ Claude generates 3 copy variants (A, B, C) and writes to `/tmp/auto/variants.jso
 ```
 
 Rules Claude MUST follow (run `/spam-word-checker` on output):
-- No em dashes (—). Use commas or periods.
+- No em dashes (, ). Use commas or periods.
 - No "leverage", "synergy", "solutions", "world-class", "cutting-edge".
 - Body: 50-90 words max.
 - Subject: under 60 chars, specific, no clickbait.
@@ -159,7 +159,7 @@ npx tsx scripts/phase-upload.ts \
 This script:
 1. Creates a new Smartlead campaign named `[AUTO] <date> <target> Auto`
 2. Saves the 3-variant sequence with campaign-ID-scoped custom vars (`{{situation_line_a_{campaign_id}}}`)
-3. Selects N inboxes tagged "active" from Smartlead (LRU — least recently used first)
+3. Selects N inboxes tagged "active" from Smartlead (LRU, least recently used first)
 4. Uploads leads in batches of 100 with custom fields mapped to their personalization
 5. Sets schedule (Mon-Fri 8am-5pm EST) and settings (tracking off, stop on reply)
 6. Activates the campaign
@@ -238,11 +238,11 @@ Works for <1000 inboxes. If you scale beyond that, migrate to a real DB.
 
 ## Common issues
 
-- **Prospeo INVALID_FILTERS** — Usually "industry name not in the 256 list." Check `/icp-onboarding` references/prospeo-industries.md for exact matches.
-- **Low email hit rate** — If <30%, your list is targeting hard-to-find people (niche titles, small companies). Widen ICP or accept the cost.
-- **Sub-agent personalization repetitive** — If you see the same phrasing across leads, rerun that batch with a diversity prompt. See `/personalization-subagent-pattern` references/failure-modes.md.
-- **Smartlead "inbox not allowed" on upload** — Inbox is flagged/blocked. The script skips and continues.
-- **Campaign stuck at 0 sends** — Check campaign schedule, inbox warmup status (via `/smartlead-inbox-manager list-health`), and that leads actually uploaded.
+- **Prospeo INVALID_FILTERS**, Usually "industry name not in the 256 list." Check `/icp-onboarding` references/prospeo-industries.md for exact matches.
+- **Low email hit rate**, If <30%, your list is targeting hard-to-find people (niche titles, small companies). Widen ICP or accept the cost.
+- **Sub-agent personalization repetitive**, If you see the same phrasing across leads, rerun that batch with a diversity prompt. See `/personalization-subagent-pattern` references/failure-modes.md.
+- **Smartlead "inbox not allowed" on upload**, Inbox is flagged/blocked. The script skips and continues.
+- **Campaign stuck at 0 sends**, Check campaign schedule, inbox warmup status (via `/smartlead-inbox-manager list-health`), and that leads actually uploaded.
 
 ## Cost per run
 
@@ -251,23 +251,23 @@ Typical run (1 target, 1000 leads pulled):
 - Prospeo enrich-person (email finding for ~500 leads missing email): ~$5
 - MillionVerifier validation: ~$0.50
 - Smartlead send cost: ~$0.001/email sent over time
-- Claude Code Task sub-agents: (uses your Claude Code plan — no extra API spend)
+- Claude Code Task sub-agents: (uses your Claude Code plan, no extra API spend)
 
 Total: **~$6-10 per campaign** to reach 300-500 valid emails.
 
 ## Scripts
 
-- `scripts/phase-scrape.ts` — website scrape
-- `scripts/phase-prospeo.ts` — Prospeo paginated search
-- `scripts/phase-enrich.ts` — email waterfall + description enrichment + MillionVerifier
-- `scripts/phase-upload.ts` — Smartlead campaign creation + upload
-- `scripts/_lib.ts` — shared API helpers
+- `scripts/phase-scrape.ts`, website scrape
+- `scripts/phase-prospeo.ts`, Prospeo paginated search
+- `scripts/phase-enrich.ts`, email waterfall + description enrichment + MillionVerifier
+- `scripts/phase-upload.ts`, Smartlead campaign creation + upload
+- `scripts/_lib.ts`, shared API helpers
 
 ## References
 
-- `references/orchestration-checklist.md` — full step-by-step for running the loop manually
-- `references/icp-to-prospeo.md` — how to translate client-profile.yaml into Prospeo filter JSON
-- `references/copy-variant-guide.md` — how to write 3 distinct A/B/C variants
+- `references/orchestration-checklist.md`, full step-by-step for running the loop manually
+- `references/icp-to-prospeo.md`, how to translate client-profile.yaml into Prospeo filter JSON
+- `references/copy-variant-guide.md`, how to write 3 distinct A/B/C variants
 
 ## What to do next
 
@@ -279,9 +279,9 @@ Total: **~$6-10 per campaign** to reach 300-500 valid emails.
 
 ## Related skills
 
-- `/icp-onboarding` — produces client-profile.yaml (required input)
-- `/lead-magnet-brainstorm` — produces the offer/CTA this campaign asks about
-- `/personalization-subagent-pattern` — the fan-out pattern used in phase 6
-- `/smartlead-inbox-manager` — must run BEFORE so inboxes are tagged/warmed
-- `/positive-reply-scoring` — run AFTER 21 days to score the campaign
-- `/experiment-design` — how to plan which target to try next
+- `/icp-onboarding`, produces client-profile.yaml (required input)
+- `/lead-magnet-brainstorm`, produces the offer/CTA this campaign asks about
+- `/personalization-subagent-pattern`, the fan-out pattern used in phase 6
+- `/smartlead-inbox-manager`, must run BEFORE so inboxes are tagged/warmed
+- `/positive-reply-scoring`, run AFTER 21 days to score the campaign
+- `/experiment-design`, how to plan which target to try next

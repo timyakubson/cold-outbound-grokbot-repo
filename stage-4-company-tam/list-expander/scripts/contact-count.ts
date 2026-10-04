@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * Phase 5a — Verified-email contact ceiling. Given the qualified company CSV
+ * Phase 5a, Verified-email contact ceiling. Given the qualified company CSV
  * and target titles/seniorities, uses the free Prospeo count trick
  * (person_contact_details.email=["VERIFIED"] → pagination.total_count) to
  * size the contactable TAM. Batches domains 500 at a time (company.websites max).
@@ -15,7 +15,7 @@ import { join } from "path";
 import { loadEnv, parseArgs, readCsv, normDomain, outDir, prospeoCount, maybeHelp } from "./lib";
 
 maybeHelp(`
-contact-count.ts — Phase 5a: verified-email contact ceiling for a qualified company list.
+contact-count.ts, Phase 5a: verified-email contact ceiling for a qualified company list.
 
   npx tsx contact-count.ts --csv=qualified.csv --run=<slug> \\
     [--titles="COO,VP Operations,Practice Administrator"] \\

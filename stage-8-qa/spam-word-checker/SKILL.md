@@ -77,7 +77,7 @@ Do not use any of the following standalone or as part of a compound word/phrase:
 
 ## Unsubscribe / Closeout Line Rules
 
-Never write an unsubscribe line that promises to stop following up based on silence. We DO follow up — that's the whole point of sequences. Silence-based promises are misleading and fail to match actual behavior.
+Never write an unsubscribe line that promises to stop following up based on silence. We DO follow up, that's the whole point of sequences. Silence-based promises are misleading and fail to match actual behavior.
 
 **Banned patterns (silence = we stop):**
 - `I will take silence as a no`
@@ -160,8 +160,8 @@ Before approving any copy:
 
 **If flags fired:** back to `/campaign-copywriting` to rewrite the flagged lines. Re-run this check after.
 
-**Or wait:** this skill auto-triggers on every copy draft — there's no standalone "next". Continue whatever copy work you were doing.
+**Or wait:** this skill auto-triggers on every copy draft, there's no standalone "next". Continue whatever copy work you were doing.
 
 ## Related skills
 
-- `/campaign-copywriting` — produces the copy this skill screens
+- `/campaign-copywriting`, produces the copy this skill screens

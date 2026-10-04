@@ -298,7 +298,7 @@ Template for Cold Emails with Social Proof and CTA:
 *"Hey \[First Name\], \[based on social proof\] \[how we could help\] \[CTA\] \- \[Initials for a Signature\]."*
 
 **Example:**  
-*"Hey John – Based on how we help Acme Federal Credit Union predict overdraft fees and unlock \$3.2MM annual profit, we could do a lot to help you with irritating risks associated with bad creditors. Worth exploring? \- JM"*
+*"Hey John - Based on how we help Acme Federal Credit Union predict overdraft fees and unlock \$3.2MM annual profit, we could do a lot to help you with irritating risks associated with bad creditors. Worth exploring? \- JM"*
 
 | Template Number | Template Name | Best Use Case |
 | :---- | :---- | :---- |
@@ -550,9 +550,9 @@ Transactions completed without any delays.
 
 Subject: house on Marbella Drive
 
-*“Kim – What people hate about selling their home is losing 10% of the purchase price on transaction fees to transfer the deed – stuff like lawyers, title companies, etc.*
+*“Kim - What people hate about selling their home is losing 10% of the purchase price on transaction fees to transfer the deed - stuff like lawyers, title companies, etc.*
 
-*Over 2,000 homeowners in South Florida have sold their homes without involvement from a third party – no fees, title companies, or lawyers. Transactions completed in 15 minutes rather than weeks. It involves using a smart contract to tokenize titles \+ deeds.*
+*Over 2,000 homeowners in South Florida have sold their homes without involvement from a third party - no fees, title companies, or lawyers. Transactions completed in 15 minutes rather than weeks. It involves using a smart contract to tokenize titles \+ deeds.*
 
 *Have you considered tokenizing your home for sale on Marbella Drive?”*
 
@@ -566,9 +566,9 @@ Why This Works
 This is for a smart contract, but you can easily customize this for your prospects.
 
 **Template:**  
-*{first name} – What people hate about {process that you solve} is {detailed pain point} – stuff like {give examples}*
+*{first name} - What people hate about {process that you solve} is {detailed pain point} - stuff like {give examples}*
 
-*Over {number of ICP} {ICP} have sold their homes without {product-specific headache} – no {list common challenges}. {dream outcome} completed in {shorter time rather than longer time}.*
+*Over {number of ICP} {ICP} have sold their homes without {product-specific headache} - no {list common challenges}. {dream outcome} completed in {shorter time rather than longer time}.*
 
  *It involves using a {solution process short description}.*
 
@@ -586,7 +586,7 @@ I’ve used my company as an example, but you should be able to connect the dots
 
 Sentence 1: Show you did your homework (“I noticed on your website that xyz is a customer. Congrats on getting traction with such an established brand, which is undeniably no small feat for an early stage startup.”).
 
-Sentence 2: Explain what they are missing out on (“I know from speaking with other founders that many, if not all, find it challenging to developing a repeatable selling process in a way that feels natural, comfortable, and authentic without sounding “sales-y.” The impact – inaction.  Lack of a predictable pipeline and sales.”). Why this works: Fear of loss is a much more powerful motivator than gain.  
+Sentence 2: Explain what they are missing out on (“I know from speaking with other founders that many, if not all, find it challenging to developing a repeatable selling process in a way that feels natural, comfortable, and authentic without sounding “sales-y.” The impact - inaction.  Lack of a predictable pipeline and sales.”). Why this works: Fear of loss is a much more powerful motivator than gain.  
 
 Sentence 3: Explain how you might be able to help and add social proof (“In the past year we’ve worked with companies like abc and def to help them close more deals in less time without selling their soul, and we think we might be able to help xyz in this area as well.”).
 
@@ -597,7 +597,7 @@ Sentence 4 Variation: “If you’d like, I can send you a 2 minute demo so you 
 **Example:**  
 (“I noticed on your website that xyz is a customer. Congrats on getting traction with such an established brand, which is undeniably no small feat for an early stage startup.”).
 
- (“I know from speaking with other founders that many, if not all, find it challenging to developing a repeatable selling process in a way that feels natural, comfortable, and authentic without sounding “sales-y.” The impact – inaction.  Lack of a predictable pipeline and sales.”).
+ (“I know from speaking with other founders that many, if not all, find it challenging to developing a repeatable selling process in a way that feels natural, comfortable, and authentic without sounding “sales-y.” The impact - inaction.  Lack of a predictable pipeline and sales.”).
 
 (“In the past year we’ve worked with companies like abc and def to help them close more deals in less time without selling their soul, and we think we might be able to help xyz in this area as well.”).
 
@@ -673,7 +673,7 @@ Crispy means:
 
 Subject: Digital Academy Course?
 
-“Lisa, are you open to a new perspective for recovering failed payments without taxing your team? Amy Porterfield is recovering 87% of failed payments. \$14,979 failed, recovered \$12,986, compared to \$3,743 before. Pay for performance – no bots. Worth a brief email exchange? Thanks. James.”
+“Lisa, are you open to a new perspective for recovering failed payments without taxing your team? Amy Porterfield is recovering 87% of failed payments. \$14,979 failed, recovered \$12,986, compared to \$3,743 before. Pay for performance - no bots. Worth a brief email exchange? Thanks. James.”
 
 Be crispy.
 
@@ -1015,7 +1015,7 @@ Capital One, Fannie Mae, & Zest A reduced interview timelines from 45 days to un
 
 **Template:**  
  Hi {first name},  
- {Personalized first line—an observation or a problem and why it’s relevant},
+ {Personalized first line, an observation or a problem and why it’s relevant},
 
 Can I send you a Loom video with {specific solution to a problem}?
 
@@ -1127,7 +1127,7 @@ Best,
 
 Hi {First Name},
 
-We loved working with you on {Past Project/Role}. I noticed {Company} is hiring for {Current Role}—it seems like a similar opportunity where we could help you find top candidates quickly.
+We loved working with you on {Past Project/Role}. I noticed {Company} is hiring for {Current Role}, it seems like a similar opportunity where we could help you find top candidates quickly.
 
 Are you open to a no-cost trial placement? We’d love to show how we can continue to be a reliable partner.
 
@@ -1140,7 +1140,7 @@ Hi {First Name},
 
 Reflecting on our past collaboration with {Specific Role or Team}, we wanted to share profiles of 2 highly-qualified candidates who are actively seeking roles like {Current Role} at {Company}.
 
-Would you be open to reviewing their profiles? No obligation—just thought they might be a perfect fit for your team.
+Would you be open to reviewing their profiles? No obligation, just thought they might be a perfect fit for your team.
 
 Best,  
 {Your Name}
@@ -1236,7 +1236,7 @@ One observation.
 One CTA.   
 Casual tone.   
 **EXAMPLE:**   
-"Penn—nice job winning Facebook and Google.   
+"Penn, nice job winning Facebook and Google.   
 Mind if share a hot new strategy to land more top-tier tech clients?"
 
 | Template Number | Template Name | Best Use Case |

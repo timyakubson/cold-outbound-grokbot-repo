@@ -38,7 +38,7 @@ t = t.replace("{{ICP_ONE_LINER}}", spec.icp)
      .replace("{{QUALIFIES_BULLETS}}", (spec.qualifies ?? []).map((b: string) => `- ${b}`).join("\n"))
      .replace("{{DISQUALIFIES_BULLETS}}", (spec.disqualifies ?? []).map((b: string) => `- ${b}`).join("\n"));
 for (const must of ["MANDATORY BLOCK 1", "MANDATORY BLOCK 2", "MANDATORY BLOCK 3", "MANDATORY BLOCK 4"]) {
-  if (!t.includes(must)) { console.error(`assembled prompt missing ${must} — template corrupted`); process.exit(1); }
+  if (!t.includes(must)) { console.error(`assembled prompt missing ${must}, template corrupted`); process.exit(1); }
 }
 writeFileSync(String(args.out), t.trim() + "\n");
 const sha = createHash("sha256").update(t.trim()).digest("hex").slice(0, 16);

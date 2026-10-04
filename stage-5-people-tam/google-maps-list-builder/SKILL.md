@@ -5,14 +5,14 @@ description: Scrape Google Maps for local businesses by category and location, o
 
 # Google Maps List Builder
 
-A self-contained tool for scraping business listings from Google Maps. Give it a search query (e.g., "pizza restaurant") and a location (zip code, city, or coordinates), and it returns structured data for every matching business — written to CSV.
+A self-contained tool for scraping business listings from Google Maps. Give it a search query (e.g., "pizza restaurant") and a location (zip code, city, or coordinates), and it returns structured data for every matching business, written to CSV.
 
 ## How this fits in the cold email flow
 
 Google Maps gives you COMPANIES (name, domain, phone, address, ratings). It does NOT give you PEOPLE. To run cold email:
 
 1. Run this skill → CSV of businesses with `company_domain`
-2. **Run `/icp-prompt-builder` on a sample of 50** — tune a qualification prompt to filter out bad fits before paying for downstream enrichment
+2. **Run `/icp-prompt-builder` on a sample of 50**, tune a qualification prompt to filter out bad fits before paying for downstream enrichment
 3. Run `/blitz-list-builder` with the filtered CSV → adds owners/managers to each business
 4. Run `/email-waterfall` → fills in missing emails
 5. Run `/cold-email-starter-kit`'s `smartlead-add-leads.ts` → upload to Smartlead
@@ -106,7 +106,7 @@ google-maps-scraper/
 
 ## Bundled Zip Code Database
 
-The repo includes `data/us-zip-codes.csv` — a complete US zip code reference with 42,734 entries. Columns:
+The repo includes `data/us-zip-codes.csv`, a complete US zip code reference with 42,734 entries. Columns:
 
 ```
 zip,primary_city,state,timezone,area_codes,world_region,country,latitude,longitude,irs_estimated_population
@@ -566,7 +566,7 @@ npm run scrape -- --query="pizza restaurant" --zips=10014,10013,10012
 # Search ALL dentists in Texas (zips with population >= 5000)
 npm run scrape -- --query="dentist" --state=TX --min-pop=5000
 
-# Every gym in California (all 2,657 zip codes — takes a while)
+# Every gym in California (all 2,657 zip codes, takes a while)
 npm run scrape -- --query="gym" --state=CA
 
 # Search dentists across specific cities
@@ -731,21 +731,21 @@ The free tier on RapidAPI has request limits (check your plan). The client is ha
 ### Response Fields
 
 Each result includes:
-- `place_id` — unique Google Maps identifier
-- `name` — business name
-- `address` — full street address
-- `phone` — phone number (if listed)
-- `website` — website URL (if listed)
-- `rating` — star rating (1-5)
-- `reviews_count` — number of Google reviews
-- `lat` / `lng` — coordinates
-- `types` / `category` — business categories (e.g., "pizza_restaurant")
+- `place_id`, unique Google Maps identifier
+- `name`, business name
+- `address`, full street address
+- `phone`, phone number (if listed)
+- `website`, website URL (if listed)
+- `rating`, star rating (1-5)
+- `reviews_count`, number of Google reviews
+- `lat` / `lng`, coordinates
+- `types` / `category`, business categories (e.g., "pizza_restaurant")
 
 ## Tips
 
 - **"query in zipcode"** format works best for US searches. No coordinates needed.
 - **20 results per search** is the max. To get more coverage, search multiple overlapping zip codes.
-- **Dedup by `place_id`** — the same business often shows up in adjacent zip code searches.
+- **Dedup by `place_id`**, the same business often shows up in adjacent zip code searches.
 - **Cuisine/category filtering**: The `types` field tells you what kind of business it is. Use it to filter out irrelevant results (e.g., filter out "bar" when searching for "restaurant").
 - **Cost**: Check your RapidAPI plan. The free tier usually gives you enough for testing. Paid plans are cheap for bulk scraping.
 
@@ -753,7 +753,7 @@ Each result includes:
 
 ## What to do next
 
-**Run `/icp-prompt-builder`** on a 50-business sample (required step above). Then `/blitz-list-builder` with the filtered domains to find owner contacts — Google Maps returns businesses, not people.
+**Run `/icp-prompt-builder`** on a 50-business sample (required step above). Then `/blitz-list-builder` with the filtered domains to find owner contacts, Google Maps returns businesses, not people.
 
 After owner discovery: `/email-waterfall` to fill missing emails, then `/list-quality-scorecard` to grade.
 
@@ -761,7 +761,7 @@ After owner discovery: `/email-waterfall` to fill missing emails, then `/list-qu
 
 ## Related skills
 
-- `/icp-prompt-builder` — required qualification pass
-- `/blitz-list-builder` — find owner contacts at each business
-- `/email-waterfall` — fill missing emails
-- `/list-quality-scorecard` — grade the final list
+- `/icp-prompt-builder`, required qualification pass
+- `/blitz-list-builder`, find owner contacts at each business
+- `/email-waterfall`, fill missing emails
+- `/list-quality-scorecard`, grade the final list

@@ -5,7 +5,7 @@ description: Diagnostic audit for a running cold email program. Checks domain au
 
 # Email Deliverability Audit
 
-**If your positive reply rate is dropping and you don't know why, start here.** Most of the time the problem is deliverability — your emails aren't reaching inboxes. This skill tells you what's broken.
+**If your positive reply rate is dropping and you don't know why, start here.** Most of the time the problem is deliverability, your emails aren't reaching inboxes. This skill tells you what's broken.
 
 ## What it checks
 
@@ -18,11 +18,11 @@ description: Diagnostic audit for a running cold email program. Checks domain au
 | Bounce rate | Per-inbox and per-domain bounce rate over last 30 days | Smartlead campaign analytics |
 | Spam placement | Real inbox-vs-spam test via Smartlead Smart Delivery | optional |
 
-## The 1% rule — core domain-health threshold
+## The 1% rule, core domain-health threshold
 
 **A healthy domain should have an overall reply rate of at least 1% after 200 emails sent.**
 
-Below 1% after 200+ sends is a red flag — something is broken. The audit explicitly checks this and flags any domain or inbox that:
+Below 1% after 200+ sends is a red flag, something is broken. The audit explicitly checks this and flags any domain or inbox that:
 - Has sent ≥200 emails in the lookback window
 - Has an overall reply rate <1%
 
@@ -30,7 +30,7 @@ Possible causes (the audit's "root-cause suggestions" try to pinpoint which):
 - Emails landing in spam (run the spam placement test)
 - Domain reputation damaged (check DMARC reports, reconsider domain age)
 - Copy is broken (manually review for vague CTAs, generic openers, or em dashes; re-run `/spam-word-checker`)
-- List is cold / wrong ICP (check bounce rate — if >3%, list is the problem)
+- List is cold / wrong ICP (check bounce rate, if >3%, list is the problem)
 - Inbox hasn't warmed enough (check warmup status)
 
 Below 200 sends: too early to judge. The rule needs sample size.
@@ -112,7 +112,7 @@ npx tsx scripts/generate-report.ts --audit-dir=/tmp/audit --out=/tmp/audit/repor
 Produces a markdown report like:
 
 ```
-# Deliverability Audit — 2026-04-17
+# Deliverability Audit, 2026-04-17
 
 ## Summary
 
@@ -123,16 +123,16 @@ Produces a markdown report like:
 - Fleet performance (last 30d):
     Sent:           42,384
     Replies:          523
-    Overall reply rate: 1.23% (PASS — above 1% threshold)
+    Overall reply rate: 1.23% (PASS, above 1% threshold)
     Bounces:           382
-    Bounce rate:      0.90% (PASS — below 2%)
+    Bounce rate:      0.90% (PASS, below 2%)
 - 4 inboxes failed the 1% rule (sent ≥200, reply rate <1%)
 - Spam placement (test run): 83% inbox / 14% spam / 3% tabs (ACCEPTABLE but not great)
 
 ## Critical issues (fix within 24h)
 
 1. Domain trygrowth.co has no DMARC record. Add: v=DMARC1; p=none; rua=mailto:dmarc@trygrowth.co
-2. Inbox sales@trygrowth.co blocked in warmup — likely flagged by warmup network. Rotate out of campaigns.
+2. Inbox sales@trygrowth.co blocked in warmup, likely flagged by warmup network. Rotate out of campaigns.
 3. 12 inboxes have 0 daily sent today despite being in active campaigns. Check campaign schedule.
 4. Inbox marketing@other.co failed the 1% rule: 347 sent, 1 reply (0.29% reply rate). Investigate:
    - Check spam placement for this inbox
@@ -143,7 +143,7 @@ Produces a markdown report like:
 
 - 5 domains missing DKIM record at default._domainkey
 - 3 inboxes reputation dropped "fair" → "bad"
-- Spam filter trigger DKIM_INVALID firing 8% of the time — likely for a subset of domains
+- Spam filter trigger DKIM_INVALID firing 8% of the time, likely for a subset of domains
 
 ## Action items (prioritized)
 
@@ -165,37 +165,37 @@ Feed the action items into the right skills:
 ## Interpreting the numbers
 
 ### Bounce rates
-- **<1%** — Excellent. Healthy list.
-- **1-2%** — Normal for cold. No action.
-- **2-3%** — Yellow. Check list quality, might be old emails.
-- **>3%** — Red. Verify the list (MillionVerifier), consider pausing.
-- **>5%** — Stop immediately. You're damaging domain reputation.
+- **<1%**, Excellent. Healthy list.
+- **1-2%**, Normal for cold. No action.
+- **2-3%**, Yellow. Check list quality, might be old emails.
+- **>3%**, Red. Verify the list (MillionVerifier), consider pausing.
+- **>5%**, Stop immediately. You're damaging domain reputation.
 
 ### Spam placement
-- **>90% inbox** — Great. Ship more.
-- **80-90% inbox** — Acceptable.
-- **70-80% inbox** — Yellow. Look at spam-filter-details to see what's triggering.
-- **<70% inbox** — Red. Pause and fix auth + copy before sending more.
+- **>90% inbox**, Great. Ship more.
+- **80-90% inbox**, Acceptable.
+- **70-80% inbox**, Yellow. Look at spam-filter-details to see what's triggering.
+- **<70% inbox**, Red. Pause and fix auth + copy before sending more.
 
 ### DMARC policies
-- **None** — Acceptable for first 2 weeks of a domain's life. After that, tighten.
-- **Quarantine** — Recommended long-term. Emails that fail auth land in spam.
-- **Reject** — Strictest. Only use after 30+ days of clean `rua=` reports confirming all legitimate mail passes.
+- **None**, Acceptable for first 2 weeks of a domain's life. After that, tighten.
+- **Quarantine**, Recommended long-term. Emails that fail auth land in spam.
+- **Reject**, Strictest. Only use after 30+ days of clean `rua=` reports confirming all legitimate mail passes.
 
 ### Warmup reputation
 - Smartlead reports reputation as 0-100 internally. Higher is better.
 - Above 80: inbox is good to send from.
 - 50-80: keep warming, don't use for critical sends.
-- Below 50: don't send from this inbox — warmup peers aren't seeing it in their inboxes.
+- Below 50: don't send from this inbox, warmup peers aren't seeing it in their inboxes.
 
 ## Common root causes
 
-- **SPF too lax** — `v=spf1 +all` whitelists everyone. Use `v=spf1 include:zapmail.com ~all` or similar.
-- **DKIM missing** — new domain, selector not published. Zapmail publishes at `default._domainkey` by default.
-- **DMARC alignment failure** — From-domain doesn't match SPF/DKIM domain. Usually a misconfigured reply-to or a 3rd-party sender.
-- **Too many inboxes per domain** — Gmail flags domains with >3-5 inboxes as suspicious. Keep it at 2/domain.
-- **Aggressive warmup ramp** — Jumping from 5 to 40/day in one week = flag. Ramp over 2-4 weeks.
-- **Shared sending IP with spam traffic** — Zapmail/most providers use shared pools. If someone else on your IP spammed, you suffer. Not much to do except wait for pool rotation.
+- **SPF too lax**, `v=spf1 +all` whitelists everyone. Use `v=spf1 include:zapmail.com ~all` or similar.
+- **DKIM missing**, new domain, selector not published. Zapmail publishes at `default._domainkey` by default.
+- **DMARC alignment failure**, From-domain doesn't match SPF/DKIM domain. Usually a misconfigured reply-to or a 3rd-party sender.
+- **Too many inboxes per domain**, Gmail flags domains with >3-5 inboxes as suspicious. Keep it at 2/domain.
+- **Aggressive warmup ramp**, Jumping from 5 to 40/day in one week = flag. Ramp over 2-4 weeks.
+- **Shared sending IP with spam traffic**, Zapmail/most providers use shared pools. If someone else on your IP spammed, you suffer. Not much to do except wait for pool rotation.
 
 ## What to do next
 
@@ -207,21 +207,21 @@ Feed the action items into the right skills:
 
 ## Related skills
 
-- `/smartlead-inbox-manager` — execute the action items (rotate, retag, warmup settings)
-- `/zapmail-domain-setup-public` — fix DNS/auth issues at the domain provider
-- `/spam-word-checker` — check copy for spam-triggering phrases
-- `/deliverability-test-public` — lighter-weight SMTP vs Gmail vs Outlook reply/bounce comparison
+- `/smartlead-inbox-manager`, execute the action items (rotate, retag, warmup settings)
+- `/zapmail-domain-setup-public`, fix DNS/auth issues at the domain provider
+- `/spam-word-checker`, check copy for spam-triggering phrases
+- `/deliverability-test-public`, lighter-weight SMTP vs Gmail vs Outlook reply/bounce comparison
 
 ## Scripts
 
-- `scripts/audit-inboxes.ts` — pull + format inbox inventory
-- `scripts/check-domain-auth.ts` — dig-based SPF/DKIM/DMARC checks
-- `scripts/audit-performance.ts` — per-inbox sent / replies / bounces / rates from campaign analytics (applies the 1% rule)
-- `scripts/run-spam-test.ts` — create + poll + pull Smart Delivery test
-- `scripts/generate-report.ts` — synthesize all CSVs into markdown report
-- `scripts/_smart-delivery.ts` — shared Smart Delivery API wrapper
+- `scripts/audit-inboxes.ts`, pull + format inbox inventory
+- `scripts/check-domain-auth.ts`, dig-based SPF/DKIM/DMARC checks
+- `scripts/audit-performance.ts`, per-inbox sent / replies / bounces / rates from campaign analytics (applies the 1% rule)
+- `scripts/run-spam-test.ts`, create + poll + pull Smart Delivery test
+- `scripts/generate-report.ts`, synthesize all CSVs into markdown report
+- `scripts/_smart-delivery.ts`, shared Smart Delivery API wrapper
 
 ## References
 
-- `references/smart-delivery-api.md` — full endpoint reference for Smart Delivery
-- `references/dns-records.md` — SPF/DKIM/DMARC record templates + interpretation guide
+- `references/smart-delivery-api.md`, full endpoint reference for Smart Delivery
+- `references/dns-records.md`, SPF/DKIM/DMARC record templates + interpretation guide

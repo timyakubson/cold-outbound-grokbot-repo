@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * snowball.ts — automated sweep-until-dry (WS3). Run AFTER a lane's first
+ * snowball.ts, automated sweep-until-dry (WS3). Run AFTER a lane's first
  * run-lane pass is READY:
  *
  *     npx tsx snowball.ts --config=<lane.json>
@@ -8,11 +8,11 @@
  * Each round:
  *   1. Confirmed set = verified domains (lane WAL + verified.stream).
  *   2. Derive candidate INDUSTRIES carried by ≥1 confirmed fit (from pull/enrich
- *      data) — the exhaustive-sweep law — plus lookalikes from the newest
+ *      data), the exhaustive-sweep law, plus lookalikes from the newest
  *      confirmed seeds.
  *   3. Diff against the swept-filter ledger (normalized string + sha; paid
  *      repeats blocked, free <30d re-pulls allowed). Mega-industries (>100k in
- *      scope) are pulled through the same Prospeo path — pull.ts auto-shards any
+ *      scope) are pulled through the same Prospeo path, pull.ts auto-shards any
  *      filter whose page-1 total_count exceeds 24k (states, then headcount bands).
  *   4. Pull delta → score (same judge) → verify → WAL.
  *   5. net-new verified this round vs total: stop when <3% OR <25 domains OR
@@ -49,7 +49,7 @@ const sha = (s: string) => createHash("sha256").update(s).digest("hex").slice(0,
 
 // Two-phase ledger (2026-07-14): a "pulled" entry is written at count time; a
 // "judged" entry is written only after the round's scoring+verify land. A filter
-// counts as swept ONLY when a "judged" entry exists — so a round that crashed
+// counts as swept ONLY when a "judged" entry exists, so a round that crashed
 // between pull and judge re-pulls (free within 30d) instead of being skipped as
 // "done". OLD single-phase entries (no `phase` field) are treated as judged for
 // backward compatibility with existing donut ledgers.
@@ -68,7 +68,7 @@ function alreadySwept(norm: string, ledger: Ledger[]): boolean {
   const done = ledger.filter((l) => l.norm === norm && (l.phase === undefined || l.phase === "judged"));
   if (!done.length) return false;
   const newest = Math.max(...done.map((l) => Date.parse(l.at)));
-  // identical Prospeo pulls are FREE within 30 days — only block PAID repeats
+  // identical Prospeo pulls are FREE within 30 days, only block PAID repeats
   return Date.now() - newest < 30 * 86400_000;
 }
 
@@ -105,7 +105,7 @@ function industriesOfConfirmed(): Map<string, number> {
 // Fixed output schema for snowball-rN.csv (stream-writable header). Superset of
 // prospeoCompanyRow columns + text_excerpt/source_filters so FINALIZE keeps the
 // enrichment fields (blanks where absent). score-batch reads domain/name/text_excerpt; verify reads name/domain/
-// industry/state/source_filters — all present.
+// industry/state/source_filters, all present.
 const SNOWBALL_COLS = ["domain", "name", "industry", "employee_count", "employee_range", "revenue_range", "founded", "company_type", "country", "state", "city", "phone", "active_job_postings", "keywords", "linkedin", "text_excerpt", "source_filters"];
 
 function qualifiedAcrossStreams(): number {
@@ -124,7 +124,7 @@ function tsx(script: string, argv: string[]): number {
 }
 
 async function main() {
-  console.log(`snowball ${laneId} — up to ${MAX_ROUNDS} rounds`);
+  console.log(`snowball ${laneId}, up to ${MAX_ROUNDS} rounds`);
   const base: any = { company_location_search: { include: cfg.states?.length ? cfg.states.map((s: string) => `${s}, United States`) : ["United States #US"] }, company_headcount_custom: { min: cfg.emp_min, max: cfg.emp_max } };
 
   for (let round = 1; round <= MAX_ROUNDS; round++) {
@@ -148,13 +148,13 @@ async function main() {
       // through the same Prospeo pull: pull.ts auto-shards any filter over 24k
       // (country -> 50 states + DC -> headcount-band bisection), so the tail is
       // not lost and no extra source is required.
-      if (count > 100_000) console.log(`  [mega] ${ind}: ${count} in scope — pull.ts will auto-shard this filter`);
+      if (count > 100_000) console.log(`  [mega] ${ind}: ${count} in scope, pull.ts will auto-shard this filter`);
       sets.push({ label: `sb${round}-${ind.slice(0, 16).replace(/\W+/g, "-").toLowerCase()}`, filters: { company_industry: { include: [ind] }, company_headcount_custom: base.company_headcount_custom } });
       ledgerAppend({ norm, sha: sha(norm), total_count: count, pulled_rows: count, at: new Date().toISOString(), phase: "pulled" });
     }
-    if (!sets.length) { console.log("  nothing unswept — converged (ledger exhausted)"); break; }
+    if (!sets.length) { console.log("  nothing unswept, converged (ledger exhausted)"); break; }
 
-    // pull (pull.ts auto-shards any >24k filter — inherited, no change needed here)
+    // pull (pull.ts auto-shards any >24k filter, inherited, no change needed here)
     let pullDir = "";
     if (sets.length) {
       const pullRun = `sb-${laneId}-r${round}`;
@@ -164,12 +164,12 @@ async function main() {
       const pullCode = tsx(join(LX, "pull.ts"), [`--run=${pullRun}`]);
       // a dead pull child (OOM/kill) with no pull-all.csv must NOT read as "0 pulled → converged"
       if (pullCode !== 0 || !existsSync(join(pullDir, "pull-all.csv"))) {
-        throw new Error(`pull.ts exited ${pullCode} without ${join(pullDir, "pull-all.csv")} — re-run snowball to resume (re-pulls are free 30d)`);
+        throw new Error(`pull.ts exited ${pullCode} without ${join(pullDir, "pull-all.csv")}, re-run snowball to resume (re-pulls are free 30d)`);
       }
     }
     // STREAMING dedup (item 10): iterate each source's rows, keep only a domain
     // Set in memory, append accepted rows straight to snowball-rN.csv. No full-row
-    // Maps — memory stays flat regardless of round size.
+    // Maps, memory stays flat regardless of round size.
     const n = 1 + readdirSync(runDir).filter((f) => /^pull-batch\d+-scored\.csv\.stream\.csv$/.test(f)).length;
     const roundCsv = join(runDir, `snowball-r${round}.csv`);
     const known = knownDomains();
@@ -190,17 +190,17 @@ async function main() {
     }
     await new Promise<void>((res) => ws.end(res));
     console.log(`  pulled ${pulledCount}, net-new to judge ${freshDomains.length}`);
-    if (!freshDomains.length) { console.log("  round produced nothing new — converged"); break; }
+    if (!freshDomains.length) { console.log("  round produced nothing new, converged"); break; }
 
     // score
     const scoredStream = join(runDir, `pull-batch${n}-scored.csv.stream.csv`);
     const scoreCode = tsx(join(LX, "score-batch.ts"), [`--csv=${roundCsv}`, `--prompt-file=${cfg.prompt}`, "--scrape", "--concurrency=200", `--out=${join(runDir, `pull-batch${n}-scored.csv`)}`]);
     const scoredRows = existsSync(scoredStream) ? readCsv(scoredStream).length : 0;
     if (scoreCode !== 0 && scoredRows < freshDomains.length * 0.9) {
-      throw new Error(`score-batch exited ${scoreCode} (${scoredRows}/${freshDomains.length} scored) — re-run snowball to resume`);
+      throw new Error(`score-batch exited ${scoreCode} (${scoredRows}/${freshDomains.length} scored), re-run snowball to resume`);
     }
 
-    // REJECT_AUDIT on THIS round's rejects (item 3) — rescued rows are appended
+    // REJECT_AUDIT on THIS round's rejects (item 3), rescued rows are appended
     // into scoredStream, which verify then reads alongside every other stream.
     const raScript = join(LB, "reject-audit.ts");
     if (existsSync(raScript)) {
@@ -212,7 +212,7 @@ async function main() {
     const verifiedRows = existsSync(join(runDir, "verified.stream.csv")) ? readCsv(join(runDir, "verified.stream.csv")).length : 0;
     const totalQualified = qualifiedAcrossStreams();
     if (verifyCode !== 0 && verifiedRows < totalQualified * 0.9) {
-      throw new Error(`verify-website exited ${verifyCode} (${verifiedRows}/${totalQualified} verified) — re-run snowball to resume`);
+      throw new Error(`verify-website exited ${verifyCode} (${verifiedRows}/${totalQualified} verified), re-run snowball to resume`);
     }
 
     // scoring+verify landed → write the "judged" phase for every filter pulled this round

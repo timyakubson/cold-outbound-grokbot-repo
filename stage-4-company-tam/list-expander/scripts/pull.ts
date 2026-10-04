@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * Phase 4 — Wide pull. Pulls all companies matching the WINNING filters
+ * Phase 4, Wide pull. Pulls all companies matching the WINNING filters
  * (edited into winners.json after scorecard review) from Prospeo
  * /search-company, deduped, with optional exclusion list.
  *
@@ -13,12 +13,11 @@
  *   "base_filters": { "company_location_search": {"include": ["United States #US"]}, "company_headcount_custom": {"min": 10, "max": 10000} }
  * }
  *
- * Each filter set is paginated to completion (25/page, hard cap 25k/set —
- * if a set's total_count > 24k the script warns: split it by state/headcount).
+ * Each filter set is paginated to completion (25/page, hard cap 25k/set,  * if a set's total_count > 24k the script warns: split it by state/headcount).
  *
  * Usage:
  *   npx tsx pull.ts --run=medical-groups [--exclude=existing.csv] [--max-pages=999] [--test]
- *   (--test pulls only 2 pages per set — use first per the no-dry-runs-on-large-data rule)
+ *   (--test pulls only 2 pages per set, use first per the no-dry-runs-on-large-data rule)
  */
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
@@ -28,9 +27,9 @@ import {
 } from "./lib";
 
 maybeHelp(`
-pull.ts — Phase 4: wide pull of every company matching the winning filters.
+pull.ts, Phase 4: wide pull of every company matching the winning filters.
 
-  npx tsx pull.ts --run=<slug> --test                     (2 pages/set — always run this first)
+  npx tsx pull.ts --run=<slug> --test                     (2 pages/set, always run this first)
   npx tsx pull.ts --run=<slug> [--exclude=existing.csv] [--max-pages=999]
 
 Reads <run>/winners.json (format documented at the top of this file), writes
@@ -43,7 +42,7 @@ const args = parseArgs();
 const run = String(args.run ?? "default");
 const dir = outDir(run);
 const winnersPath = join(dir, "winners.json");
-if (!existsSync(winnersPath)) { console.error(`Missing ${winnersPath} — create it from the scorecard winners`); process.exit(1); }
+if (!existsSync(winnersPath)) { console.error(`Missing ${winnersPath}, create it from the scorecard winners`); process.exit(1); }
 const winners = JSON.parse(readFileSync(winnersPath, "utf8"));
 const maxPages = args.test ? 2 : Number(args["max-pages"] ?? 999);
 
@@ -99,13 +98,13 @@ async function pullFilter(filters: Record<string, any>, label: string, all: Map<
   if (total > SHARD_CAP && !args.test && depth < 8) {
     const shards = shardOf(filters);
     if (shards) {
-      console.log(`[${label}] total_count=${total} > ${SHARD_CAP} — sharding into ${shards.length} sub-pulls`);
+      console.log(`[${label}] total_count=${total} > ${SHARD_CAP}, sharding into ${shards.length} sub-pulls`);
       let pulled = 0, subs = 0;
       for (const sh of shards) { const r = await pullFilter(sh, label, all, depth + 1); pulled += r.pulled; subs += r.shards || 1; }
       console.log(`  sharded ${label} into ${subs} sub-pulls, recovered ${pulled} rows (page-1 total was ${total})`);
       return { pulled, shards: subs };
     }
-    console.log(`[${label}] total_count=${total} > ${SHARD_CAP} but not shardable further — pulling with tail truncation`);
+    console.log(`[${label}] total_count=${total} > ${SHARD_CAP} but not shardable further, pulling with tail truncation`);
   } else if (depth === 0) {
     console.log(`[${label}] total_count=${total}`);
   }

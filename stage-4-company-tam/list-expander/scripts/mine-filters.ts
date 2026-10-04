@@ -1,14 +1,14 @@
 #!/usr/bin/env tsx
 /**
- * Phase 3 — Filter mining. From a CSV of CONFIRMED-fit companies, mine
+ * Phase 3, Filter mining. From a CSV of CONFIRMED-fit companies, mine
  * candidate database filters and score each for volume + sampled precision.
  *
  * Two modes, usually run in sequence:
  *
  * 1) --propose : fingerprint confirmed companies (Prospeo record + live
  *    homepage text), print industry/keyword/n-gram frequency tables, and emit
- *    candidates.json (Claude then reviews/edits candidates.json — add keyword
- *    synonyms, remove generic terms — before scoring.)
+ *    candidates.json (Claude then reviews/edits candidates.json, add keyword
+ *    synonyms, remove generic terms, before scoring.)
  *    Pass --no-scrape to mine from Prospeo descriptions only (faster, thinner).
  *
  * 2) --scorecard : for each candidate filter, get the Prospeo total_count
@@ -34,7 +34,7 @@ import {
 } from "./lib";
 
 maybeHelp(`
-mine-filters.ts — Phase 3: mine + score candidate search filters.
+mine-filters.ts, Phase 3: mine + score candidate search filters.
 
   npx tsx mine-filters.ts --csv=confirmed.csv --run=<slug> --propose [--no-scrape] [--country="United States #US"]
   npx tsx mine-filters.ts --run=<slug> --scorecard
@@ -99,7 +99,7 @@ async function propose() {
   for (const [v, n] of top(industries, 0.1)) console.log(`  ${n}/${domains.length}  ${v}`);
   console.log("\n== Prospeo keyword tags carried by the set:");
   for (const [v, n] of top(kwTags, 0.1).slice(0, 20)) console.log(`  ${n}/${domains.length}  ${v}`);
-  console.log("\n== Top n-grams (keyword candidates — REVIEW, drop generic ones):");
+  console.log("\n== Top n-grams (keyword candidates, REVIEW, drop generic ones):");
   for (const [v, n] of top(grams, 0.15).slice(0, 40)) console.log(`  ${n}/${domains.length}  ${v}`);
 
   const candidates = {
@@ -109,11 +109,11 @@ async function propose() {
     _note: "EDIT ME before --scorecard: prune generic keywords, add Claude-proposed synonyms.",
   };
   writeFileSync(candidatesPath, JSON.stringify(candidates, null, 2));
-  console.log(`\nWrote ${candidatesPath} — review/edit keywords, then run with --scorecard`);
+  console.log(`\nWrote ${candidatesPath}, review/edit keywords, then run with --scorecard`);
 }
 
 async function scorecard() {
-  if (!existsSync(candidatesPath)) { console.error(`Missing ${candidatesPath} — run --propose first`); process.exit(1); }
+  if (!existsSync(candidatesPath)) { console.error(`Missing ${candidatesPath}, run --propose first`); process.exit(1); }
   const cand = JSON.parse(readFileSync(candidatesPath, "utf8"));
   const base = cand.base_filters ?? {};
   type Row = { type: string; value: string; prospeo_filter: string; prospeo_count: number | null; sample_file?: string; precision?: number | string; est_qualified_yield?: number | string };

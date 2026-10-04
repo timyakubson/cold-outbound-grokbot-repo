@@ -93,7 +93,7 @@ async function main() {
 
   const result = { domain: base.hostname, pages };
   writeFileSync(out, JSON.stringify(result, null, 2));
-  console.error(`\nWrote ${out} — ${pages.length} pages, ${JSON.stringify(result).length} chars`);
+  console.error(`\nWrote ${out}, ${pages.length} pages, ${JSON.stringify(result).length} chars`);
 }
 
 main();

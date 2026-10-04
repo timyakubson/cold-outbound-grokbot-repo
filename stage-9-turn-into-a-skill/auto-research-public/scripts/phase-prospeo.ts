@@ -106,7 +106,7 @@ async function main() {
     out,
     JSON.stringify({ leads, stats: { total: leads.length, withEmail, withDesc } }, null, 2)
   );
-  console.error(`\nWrote ${out} — ${leads.length} leads (${withEmail} with email, ${withDesc} with desc)`);
+  console.error(`\nWrote ${out}, ${leads.length} leads (${withEmail} with email, ${withDesc} with desc)`);
 }
 
 main().catch((e) => {

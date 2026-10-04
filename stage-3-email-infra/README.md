@@ -1,4 +1,4 @@
-# Stage 3 — Email infrastructure
+# Stage 3, Email infrastructure
 
 Before you buy a single domain or mailbox, size the setup first.
 

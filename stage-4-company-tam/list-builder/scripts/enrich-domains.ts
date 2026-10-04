@@ -41,7 +41,7 @@ async function enrichBatch(batch: string[], out: Map<string, Record<string, unkn
   for (let p = 1; p <= Math.ceil(batch.length / 25) + 2; p++) {
     const r = await prospeoSearch("search-company", { company: { websites: { include: batch } } }, p);
     if (r.error) {
-      // Errors past page 1 aren't bad-filter errors (the batch validated on p1) — just stop.
+      // Errors past page 1 aren't bad-filter errors (the batch validated on p1), just stop.
       if (p > 1) { console.error(`  batch p${p}: ${r.error_code} ${r.filter_error ?? ""}`); break; }
       const msg = r.filter_error ?? "";
       const named = batch.find((d) => msg.includes(d));

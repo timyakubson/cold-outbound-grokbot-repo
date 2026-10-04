@@ -213,7 +213,7 @@ function main() {
   }
   const nameScore = Math.round(((total - fakeNames) / total) * 100);
 
-  // Weighted average — verification and ICP fit counted 2x
+  // Weighted average, verification and ICP fit counted 2x
   const dims: { name: string; score: number; weight: number }[] = [
     { name: "Email verification", score: verificationScore, weight: 2 },
     { name: "Duplicate emails", score: dupeScore, weight: 1 },
@@ -232,16 +232,16 @@ function main() {
 
   // Top issues
   const issues: string[] = [];
-  if (!hasVerificationCol) issues.push("No email verification column — run through MillionVerifier before sending");
+  if (!hasVerificationCol) issues.push("No email verification column, run through MillionVerifier before sending");
   if (verificationScore < 100 && hasVerificationCol) {
-    issues.push(`${total - verifiedCount} emails unverified (${(100 - verificationScore).toFixed(1)}%) — run verification`);
+    issues.push(`${total - verifiedCount} emails unverified (${(100 - verificationScore).toFixed(1)}%), run verification`);
   }
-  if (dupeEmails > 0) issues.push(`${dupeEmails} duplicate emails (${dupePct.toFixed(1)}%) — deduplicate before upload`);
-  if (catchAlls > 0) issues.push(`${catchAlls} leads on catch-all addresses (${catchAllPct.toFixed(1)}%) — drop or deprioritize`);
-  if (badTitles > 0) issues.push(`${badTitles} bad titles (${badTitlePct.toFixed(1)}%) — filter by seniority in Prospeo`);
-  if (overConcentrated > 0) issues.push(`${overConcentrated} domains have >5 leads each — cap at 2-3 per domain`);
-  if (icpFitScore >= 0 && icpFitScore < 80) issues.push(`${total - icpFitCount} leads outside declared ICP (${(100 - icpFitScore).toFixed(1)}%) — filter by industry + headcount`);
-  if (fakeNames > total * 0.05) issues.push(`${fakeNames} rows with likely-fake names — review and drop`);
+  if (dupeEmails > 0) issues.push(`${dupeEmails} duplicate emails (${dupePct.toFixed(1)}%), deduplicate before upload`);
+  if (catchAlls > 0) issues.push(`${catchAlls} leads on catch-all addresses (${catchAllPct.toFixed(1)}%), drop or deprioritize`);
+  if (badTitles > 0) issues.push(`${badTitles} bad titles (${badTitlePct.toFixed(1)}%), filter by seniority in Prospeo`);
+  if (overConcentrated > 0) issues.push(`${overConcentrated} domains have >5 leads each, cap at 2-3 per domain`);
+  if (icpFitScore >= 0 && icpFitScore < 80) issues.push(`${total - icpFitCount} leads outside declared ICP (${(100 - icpFitScore).toFixed(1)}%), filter by industry + headcount`);
+  if (fakeNames > total * 0.05) issues.push(`${fakeNames} rows with likely-fake names, review and drop`);
   const topIssues = issues.slice(0, 5);
 
   // Render report

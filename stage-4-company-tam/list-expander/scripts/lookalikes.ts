@@ -1,12 +1,12 @@
 #!/usr/bin/env tsx
 /**
- * Phase 2 — Lookalike generation. Expands seed domains into candidate
+ * Phase 2, Lookalike generation. Expands seed domains into candidate
  * lookalike companies via three sources, deduped by domain:
- *   - Prospeo company_lookalike (one call per seed domain) — REQUIRED lane
+ *   - Prospeo company_lookalike (one call per seed domain), REQUIRED lane
  *   - Exa findSimilar (per seed URL; returns homepage text in the same call)
- *     — OPTIONAL, skipped when EXA_API_KEY is unset
+ *    , OPTIONAL, skipped when EXA_API_KEY is unset
  *   - Parallel.ai entity-search (NL objective; watch for junk padding)
- *     — OPTIONAL, skipped when PARALLEL_AI_API_KEY is unset
+ *    , OPTIONAL, skipped when PARALLEL_AI_API_KEY is unset
  *
  * Usage:
  *   npx tsx lookalikes.ts --domains="a.com,b.com" --run=medical-groups \
@@ -15,7 +15,7 @@
  *     [--country="United States #US"]
  *
  * Output: {run}/lookalikes-raw.csv (domain, name, source, description/homepage_excerpt)
- * These are CANDIDATES — qualify them (score-batch.ts or sub-agents) before Phase 3.
+ * These are CANDIDATES, qualify them (score-batch.ts or sub-agents) before Phase 3.
  */
 import { join } from "path";
 import {
@@ -24,7 +24,7 @@ import {
 } from "./lib";
 
 maybeHelp(`
-lookalikes.ts — Phase 2: expand seed domains into lookalike candidates.
+lookalikes.ts, Phase 2: expand seed domains into lookalike candidates.
 
   npx tsx lookalikes.ts --domains="a.com,b.com" --run=<slug> \\
     --objective="<NL description of the COMPANY TYPE, not your product>" \\
@@ -36,7 +36,7 @@ Exa findSimilar (OPTIONAL: EXA_API_KEY), Parallel.ai entity-search
 (OPTIONAL: PARALLEL_AI_API_KEY). Lanes whose key is unset are skipped with a
 log line, so the run still completes on Prospeo alone.
 
-Output: <run>/lookalikes-raw.csv — these are CANDIDATES. Qualify them with
+Output: <run>/lookalikes-raw.csv, these are CANDIDATES. Qualify them with
 score-batch.ts before Phase 3.
 `);
 
@@ -111,7 +111,7 @@ async function parallelLookalikes() {
     timeoutMs: 120_000,
   });
   const ents = r.entities ?? [];
-  console.log(`  parallel: ${ents.length} entities (limit ${parallelLimit} — expect junk padding at tail; qualify before trusting)`);
+  console.log(`  parallel: ${ents.length} entities (limit ${parallelLimit}, expect junk padding at tail; qualify before trusting)`);
   for (const e of ents) {
     // Parallel returns LinkedIn URLs, not company domains; keep name+li, resolve later if needed.
     const li = e.url ?? "";

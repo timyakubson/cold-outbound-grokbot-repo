@@ -25,7 +25,7 @@ if (!API_KEY) {
 
 const LEADS_BATCH = 100;
 
-// Allowed CSV columns — see references/leads-csv-schema.md. Changing this requires a skill update.
+// Allowed CSV columns, see references/leads-csv-schema.md. Changing this requires a skill update.
 const REQUIRED_COLS = ["email", "first_name", "last_name", "company_name"];
 const ALLOWED_COLS = new Set([
   ...REQUIRED_COLS,
@@ -96,7 +96,7 @@ type YamlValue = string | number | boolean | null | YamlValue[] | { [k: string]:
 
 function parseYaml(text: string): YamlValue {
   const lines = text.replace(/\r\n/g, "\n").split("\n");
-  // Strip comments (but not inside quoted strings — simple heuristic)
+  // Strip comments (but not inside quoted strings, simple heuristic)
   const cleaned: { indent: number; content: string }[] = [];
   for (const raw of lines) {
     let line = raw;
@@ -354,7 +354,7 @@ async function main() {
     seq_delay_details: { delay_in_days: seq.delay_days },
     seq_variants: seq.variants.map((va: any) => ({
       variant_label: va.label,
-      subject: (va.subject || "").replace(/—/g, " - ").replace(/–/g, " - "),
+      subject: (va.subject || "").replace(/, /g, " - ").replace(/-/g, " - "),
       email_body: va.body,
     })),
   }));

@@ -3,7 +3,7 @@
  * Minimal MCP-over-HTTP client for GetLeads, so scripts can call it without a
  * live MCP session. Speaks JSON-RPC 2.0 to POST https://app.getleads.io/api/mcp:
  * initialize (capturing the mcp-session-id header) → notifications/initialized →
- * tools/call. Responses may be SSE (data: {...} lines) or plain JSON — both handled.
+ * tools/call. Responses may be SSE (data: {...} lines) or plain JSON, both handled.
  *
  * Key: env GETLEADS_API_KEY (sign up at https://getleads.io), else the getleads
  * mcpServers Authorization header in ~/.claude.json (read-only).
@@ -43,7 +43,7 @@ function findAuth(obj: any): string | null {
 
 const KEY = resolveKey();
 function requireKey(): string {
-  if (!KEY) throw new Error("GETLEADS_API_KEY not set (and no getleads entry in ~/.claude.json) — sign up at https://getleads.io");
+  if (!KEY) throw new Error("GETLEADS_API_KEY not set (and no getleads entry in ~/.claude.json), sign up at https://getleads.io");
   return KEY;
 }
 let sessionId: string | null = null;
@@ -123,7 +123,7 @@ export async function getleadsSearch(args: Record<string, unknown>): Promise<any
 export async function getleadsExportToCsv(args: Record<string, unknown>, outPath: string): Promise<number> {
   const start = await getleadsCall("export_contacts", { ...args, confirmed: true });
   // Tool-level validation errors (e.g. "Invalid seniority value(s)") come back as
-  // {ok:false, message:...} in content — NOT as an RPC error. Without this check the
+  // {ok:false, message:...} in content, NOT as an RPC error. Without this check the
   // poll loop below spins 30 min and throws a generic timeout that hides the real cause.
   if (start && typeof start === "object" && (start.ok === false || start.error)) {
     throw new Error(`export_contacts rejected: ${JSON.stringify(start).slice(0, 400)}`);

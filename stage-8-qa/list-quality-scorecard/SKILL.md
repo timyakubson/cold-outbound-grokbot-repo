@@ -11,16 +11,16 @@ A CSV of 5,000 leads is not the same as a good list of 5,000 leads. This skill g
 
 The three campaign failure modes cold email runners hit most:
 
-1. **Bad list** — the copy doesn't matter when you're emailing the wrong people
-2. **Unverified emails** — bounces burn domain reputation
-3. **ICP drift** — you think you're targeting VPs, but the list is mostly Managers
+1. **Bad list**, the copy doesn't matter when you're emailing the wrong people
+2. **Unverified emails**, bounces burn domain reputation
+3. **ICP drift**, you think you're targeting VPs, but the list is mostly Managers
 
 Each of these is catchable before you send, in 5 minutes, for free.
 
 ## Inputs
 
 A CSV with at minimum these columns:
-- `email` — the primary email
+- `email`, the primary email
 - `first_name`, `last_name`
 - `job_title` OR `title`
 - `company_name` OR `company`
@@ -118,20 +118,20 @@ Grade: B (84/100)
 
 Dimensions:
 1. Email verification:    100/100  (100% verified, good)
-2. Duplicate emails:       95/100  (1.1% duplicates — trim before send)
-3. Duplicate domains:      78/100  (avg 2.4 per domain — some over-concentration)
+2. Duplicate emails:       95/100  (1.1% duplicates, trim before send)
+3. Duplicate domains:      78/100  (avg 2.4 per domain, some over-concentration)
 4. Title relevance:        82/100  (85% titles match "VP Sales" / "Head of Sales")
-5. Bad-title detection:    92/100  (3% Coordinators slipped in — filter)
-6. Catch-all density:      80/100  (8% catch-all — consider dropping)
+5. Bad-title detection:    92/100  (3% Coordinators slipped in, filter)
+6. Catch-all density:      80/100  (8% catch-all, consider dropping)
 7. ICP fit:                88/100  (88% match declared industry filter)
 8. Name quality:           97/100  (good)
 
 Top 5 issues to fix:
-1. 23 emails are duplicates (1.1%) — deduplicate before upload
-2. 64 leads are on catch-all addresses (3.0%) — drop or deprioritize
-3. 64 Coordinators in the list — filter by seniority ≥ Manager
-4. 147 leads cluster on 12 domains (>5 each) — cap at 3 per domain
-5. 258 leads outside declared industry filter (12%) — filter by company_industry
+1. 23 emails are duplicates (1.1%), deduplicate before upload
+2. 64 leads are on catch-all addresses (3.0%), drop or deprioritize
+3. 64 Coordinators in the list, filter by seniority ≥ Manager
+4. 147 leads cluster on 12 domains (>5 each), cap at 3 per domain
+5. 258 leads outside declared industry filter (12%), filter by company_industry
 
 Pre-send checklist:
 [ ] Deduplicate by email
@@ -154,21 +154,21 @@ Pre-send checklist:
 
 ## Scripts
 
-- `scripts/score-list.ts` — the main scorecard
+- `scripts/score-list.ts`, the main scorecard
 
 ## What to do next
 
 **If grade ≥ B:** `/campaign-copywriting` to write the emails. Then `/smartlead-campaign-upload-public` to launch as DRAFT.
 
-**If grade < C:** fix the top 3 issues (from scorecard output), re-run this skill until grade ≥ B. Don't upload a C-grade list — bounces and low reply rates will damage domain reputation.
+**If grade < C:** fix the top 3 issues (from scorecard output), re-run this skill until grade ≥ B. Don't upload a C-grade list, bounces and low reply rates will damage domain reputation.
 
 **Or wait:** if large fixes are needed (missing email verification, 30%+ bad titles), address those BEFORE spending more on email-finding or enrichment.
 
 ## Related skills
 
-- `/icp-prompt-builder` — more surgical ICP fit scoring (AI per-company)
-- `/icp-onboarding` — produces the `client-profile.yaml` this skill checks against
-- `/email-waterfall` — run BEFORE this skill for verification coverage
+- `/icp-prompt-builder`, more surgical ICP fit scoring (AI per-company)
+- `/icp-onboarding`, produces the `client-profile.yaml` this skill checks against
+- `/email-waterfall`, run BEFORE this skill for verification coverage
 
 ## The 1% rule alignment
 

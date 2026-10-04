@@ -18,11 +18,11 @@ Lookalike company discovery. Give it 3-10 seed domains you know are a good fit; 
 
 - You need PEOPLE, not companies (use Prospeo or Blitz after this)
 - Your ICP is extremely narrow or nascent (<5 seed examples exist)
-- Budget is tight — DiscoLike charges per call + per record; see cost section
+- Budget is tight, DiscoLike charges per call + per record; see cost section
 
 ## Two search modes
 
-### Mode A — Seed domains (most common)
+### Mode A, Seed domains (most common)
 
 ```bash
 npx tsx scripts/discover.ts --domains "clay.com,apollo.io,outreach.io" --country US --limit 500 --out lookalikes.csv
@@ -30,7 +30,7 @@ npx tsx scripts/discover.ts --domains "clay.com,apollo.io,outreach.io" --country
 
 DiscoLike finds companies with similar characteristics (industry mix, employee count range, business type, tech stack) to your seeds.
 
-### Mode B — Natural-language ICP
+### Mode B, Natural-language ICP
 
 ```bash
 npx tsx scripts/discover.ts --text "B2B SaaS companies selling outbound sales software to RevOps teams" --country US --out lookalikes.csv
@@ -44,7 +44,7 @@ Uses DiscoLike's text matching. Less precise than seeds, but useful when you don
 npx tsx scripts/discover.ts --domains "clay.com" --text "outbound automation" --country US --out lookalikes.csv
 ```
 
-Combines both — starts from seeds, expands via text semantics.
+Combines both, starts from seeds, expands via text semantics.
 
 ## Negation (exclude existing customers / competitors)
 
@@ -60,7 +60,7 @@ Always include your own domain + existing customers + known-unfit competitors. S
 
 ## Inputs
 
-- `DISCOLIKE_API_KEY` (env) — from DiscoLike dashboard
+- `DISCOLIKE_API_KEY` (env), from DiscoLike dashboard
 - Either `--domains` or `--text` (at least one required)
 - Optional: `--negation-domains`, `--country`, `--limit`, `--max-companies`
 
@@ -116,26 +116,26 @@ Before pulling 5,000 companies, run DiscoLike on a small sample (50-100), then i
 
 **Data returned per company:**
 - `domain`, `name`, `description`
-- `industry_groups` (weighted dict — script takes top industry)
+- `industry_groups` (weighted dict, script takes top industry)
 - `employees` (range string like "51-200")
 - `address` (country, state, city)
 - `social_urls` (script extracts LinkedIn company URL)
 
-**Rate limit:** Conservative — script throttles at 5 concurrent, 10 req/sec. No 429s observed on normal runs.
+**Rate limit:** Conservative, script throttles at 5 concurrent, 10 req/sec. No 429s observed on normal runs.
 
 ## Common gotchas
 
 - **Seed domains must be clean bare domains.** `clay.com` works, `https://clay.com/` doesn't.
-- **Text mode is fuzzier than you think.** "Outbound sales" returns SaaS, agencies, consultancies — broad. Tighten with seeds.
+- **Text mode is fuzzier than you think.** "Outbound sales" returns SaaS, agencies, consultancies, broad. Tighten with seeds.
 - **No people data.** DiscoLike is company-level. Always chain with Blitz or Prospeo for contacts.
 - **Non-US coverage varies.** US has deepest data. EU/APAC coverage is thinner; count may be misleading.
 - **Check the count FIRST.** Before paying for 10,000 records, run `/count` to confirm the universe actually has 10,000. Many narrow ICPs top out at 500-2000.
 
 ## Scripts
 
-- `scripts/discover.ts` — main search + CSV output
-- `scripts/count.ts` — pre-check universe size before paying
-- `scripts/bizdata.ts` — single-domain lookup
+- `scripts/discover.ts`, main search + CSV output
+- `scripts/count.ts`, pre-check universe size before paying
+- `scripts/bizdata.ts`, single-domain lookup
 
 ## What to do next
 
@@ -147,8 +147,8 @@ Before pulling 5,000 companies, run DiscoLike on a small sample (50-100), then i
 
 ## Related skills
 
-- `/icp-onboarding` — defines the seed domains you'll use
-- `/icp-prompt-builder` — quality-check the first 50 results before scaling
-- `/blitz-list-builder` — chain to find contacts at each discovered company
-- `/email-waterfall` — fill missing emails after Blitz
+- `/icp-onboarding`, defines the seed domains you'll use
+- `/icp-prompt-builder`, quality-check the first 50 results before scaling
+- `/blitz-list-builder`, chain to find contacts at each discovered company
+- `/email-waterfall`, fill missing emails after Blitz
 - `/cold-email-starter-kit` → `06-list-building-prospeo.md` for broader list-building patterns

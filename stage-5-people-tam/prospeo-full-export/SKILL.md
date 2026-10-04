@@ -1,11 +1,11 @@
 ---
 name: prospeo-full-export
-description: Export your entire Prospeo people search to CSV. Build filters in Prospeo's UI, then use this skill to extract every result via the API — even searches over 25K. Handles pagination, rate limiting, deduplication, and state-by-state splitting automatically. Pair with /icp-prompt-builder on a 50-person sample to tune a qualification prompt BEFORE exporting 25K.
+description: Export your entire Prospeo people search to CSV. Build filters in Prospeo's UI, then use this skill to extract every result via the API, even searches over 25K. Handles pagination, rate limiting, deduplication, and state-by-state splitting automatically. Pair with /icp-prompt-builder on a 50-person sample to tune a qualification prompt BEFORE exporting 25K.
 ---
 
 # Prospeo Full Search Export
 
-Extract your entire Prospeo people search to a CSV file. Build your search in Prospeo's UI, then let Claude pull every single result via the API — even if the search has more than 25,000 results.
+Extract your entire Prospeo people search to a CSV file. Build your search in Prospeo's UI, then let Claude pull every single result via the API, even if the search has more than 25,000 results.
 
 ## Required step: Qualify with /icp-prompt-builder (do not skip)
 
@@ -13,7 +13,7 @@ Before exporting more than 500 contacts, run Prospeo on a 50-contact sample, the
 
 **Why required:** email enrichment downstream costs $0.05-$0.15 per person. A 25K export that's 40% wrong-fit wastes $500-$1,500 on email-finding that goes nowhere. The ICP prompt builder takes 10-15 min and saves that cost 40-70% of the time.
 
-**Safe skip:** only if your Prospeo filter is already extremely tight (e.g., 5 exact titles + 1 industry + narrow headcount) AND you've run the same filter successfully before. Even then, run `/icp-prompt-builder` on 10 samples as a sanity check — it's nearly free to confirm.
+**Safe skip:** only if your Prospeo filter is already extremely tight (e.g., 5 exact titles + 1 industry + narrow headcount) AND you've run the same filter successfully before. Even then, run `/icp-prompt-builder` on 10 samples as a sanity check, it's nearly free to confirm.
 
 ## What This Does
 
@@ -66,7 +66,7 @@ Go to [prospeo.io/app/search](https://prospeo.io/app/search) and use the filters
 - **Revenue range**
 - **Contact details** (has verified email, has phone number)
 
-Note the total result count shown in the UI — you'll need this to estimate credits.
+Note the total result count shown in the UI, you'll need this to estimate credits.
 
 ### Step 2: Tell Claude Your Filters
 
@@ -353,7 +353,7 @@ async function exportSearch(filters: ProspeoFilters, outputFile: string, maxResu
     && filters.person_location_search?.include?.some(l => l === 'United States #US');
 
   if (needsSplit) {
-    console.log('Search exceeds 20K — switching to state-by-state mode...');
+    console.log('Search exceeds 20K, switching to state-by-state mode...');
     await exportByState(filters, outputFile, maxResults);
     return;
   }
@@ -368,7 +368,7 @@ async function exportSearch(filters: ProspeoFilters, outputFile: string, maxResu
   for (const r of first.results || []) {
     if (!isDuplicate(r.person)) rows.push(resultToRow(r));
   }
-  console.log(`  Page 1/${pagesToFetch} — ${rows.length} contacts`);
+  console.log(`  Page 1/${pagesToFetch}, ${rows.length} contacts`);
 
   for (let page = 2; page <= pagesToFetch; page++) {
     if (maxResults && rows.length >= maxResults) break;
@@ -377,7 +377,7 @@ async function exportSearch(filters: ProspeoFilters, outputFile: string, maxResu
       if (!isDuplicate(r.person)) rows.push(resultToRow(r));
     }
     if (page % 50 === 0 || page === pagesToFetch) {
-      console.log(`  Page ${page}/${pagesToFetch} — ${rows.length} contacts so far`);
+      console.log(`  Page ${page}/${pagesToFetch}, ${rows.length} contacts so far`);
     }
   }
 
@@ -433,7 +433,7 @@ async function exportByState(filters: ProspeoFilters, outputFile: string, maxRes
       }
     }
 
-    console.log(`  [${i + 1}/50] ${state}: ${stateTotal.toLocaleString()} results — ${rows.length.toLocaleString()} total contacts`);
+    console.log(`  [${i + 1}/50] ${state}: ${stateTotal.toLocaleString()} results, ${rows.length.toLocaleString()} total contacts`);
   }
 
   writeCSV(outputFile, rows);
@@ -507,15 +507,15 @@ Your API key is invalid. Check it at [prospeo.io/app/settings/api](https://prosp
 You're out of credits. Top up your Prospeo account.
 
 ### "API error: 429"
-Rate limited. The script handles this automatically with exponential backoff. If it persists, you're making too many concurrent requests — only run one export at a time.
+Rate limited. The script handles this automatically with exponential backoff. If it persists, you're making too many concurrent requests, only run one export at a time.
 
 ### Results seem low
 - Check that your location format is correct (must include `#US`, `#GB`, etc.)
-- Broaden your title filters — Prospeo does fuzzy matching by default
+- Broaden your title filters, Prospeo does fuzzy matching by default
 - Remove the `person_contact_details` filter to see all results (not just those with verified emails)
 
 ### Duplicates across states
-The script deduplicates by LinkedIn URL automatically. Some contacts may appear in multiple state searches if they've relocated — the dedup handles this.
+The script deduplicates by LinkedIn URL automatically. Some contacts may appear in multiple state searches if they've relocated, the dedup handles this.
 
 ---
 
@@ -525,7 +525,7 @@ The script deduplicates by LinkedIn URL automatically. Some contacts may appear 
 - **TypeScript** (`npm install -g tsx` to run .ts files directly)
 - A Prospeo account with API credits
 
-No other dependencies needed — the script uses only built-in Node.js modules.
+No other dependencies needed, the script uses only built-in Node.js modules.
 
 ---
 
@@ -539,7 +539,7 @@ Next: `/campaign-copywriting` → `/smartlead-campaign-upload-public`.
 
 ## Related skills
 
-- `/icp-prompt-builder` — required qualification pass before scaling
-- `/list-quality-scorecard` — grade the filtered list
-- `/campaign-copywriting` — write the emails
-- `/smartlead-campaign-upload-public` — launch in DRAFT
+- `/icp-prompt-builder`, required qualification pass before scaling
+- `/list-quality-scorecard`, grade the filtered list
+- `/campaign-copywriting`, write the emails
+- `/smartlead-campaign-upload-public`, launch in DRAFT

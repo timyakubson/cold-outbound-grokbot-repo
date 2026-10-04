@@ -24,8 +24,8 @@ This skill does all of that via the Smartlead API.
 
 Not every inbox should send all the time. A common pattern:
 
-- **Active inboxes** — currently sending in live campaigns. Warmup OFF (or minimal) to prioritize real sends.
-- **Insurance inboxes** — warmed but idle, held in reserve. Warmup ON to maintain reputation. Swap in when an active inbox burns out.
+- **Active inboxes**, currently sending in live campaigns. Warmup OFF (or minimal) to prioritize real sends.
+- **Insurance inboxes**, warmed but idle, held in reserve. Warmup ON to maintain reputation. Swap in when an active inbox burns out.
 
 Tags are how you track this at scale. Filter by tag in Smartlead UI or via API.
 
@@ -63,7 +63,7 @@ For INSURANCE inboxes (maintaining reputation long-term):
 }
 ```
 
-Lower volume, no ramp — just keeps the inbox warm.
+Lower volume, no ramp, just keeps the inbox warm.
 
 For ACTIVE inboxes (currently in live campaigns):
 ```json
@@ -94,10 +94,10 @@ Acme
 ```
 
 **Where each value comes from:**
-- `{from_name}` — the inbox's own `from_name` field if set (different personas per inbox), else `SENDER_FIRST_NAME + SENDER_LAST_NAME` from `.env`
-- `{title}` — `SENDER_TITLE` env var
-- `{company}` — `SENDER_COMPANY_NAME` env var
-- `{address}` — `SENDER_PHYSICAL_ADDRESS` env var (recommended — a real mailing address in the footer keeps you on the right side of CAN-SPAM and similar rules)
+- `{from_name}`, the inbox's own `from_name` field if set (different personas per inbox), else `SENDER_FIRST_NAME + SENDER_LAST_NAME` from `.env`
+- `{title}`, `SENDER_TITLE` env var
+- `{company}`, `SENDER_COMPANY_NAME` env var
+- `{address}`, `SENDER_PHYSICAL_ADDRESS` env var (recommended, a real mailing address in the footer keeps you on the right side of CAN-SPAM and similar rules)
 
 **Required `.env` entries for the default template:**
 ```
@@ -121,7 +121,7 @@ Available placeholders: `{from_name}`, `{from_email}`, `{domain}`, `{title}`, `{
 
 **Email body order in campaigns:**
 
-In Smartlead sequences, always end the body with `%signature%` — Smartlead injects the inbox's signature there. Order:
+In Smartlead sequences, always end the body with `%signature%`, Smartlead injects the inbox's signature there. Order:
 ```
 <body content>
 
@@ -158,8 +158,8 @@ Reputation:
   Unknown: 2
 
 Action items:
-  - 2 inboxes blocked — run /email-deliverability-audit
-  - 3 inboxes with "bad" reputation — consider pausing
+  - 2 inboxes blocked, run /email-deliverability-audit
+  - 3 inboxes with "bad" reputation, consider pausing
 ```
 
 ## Common workflows
@@ -173,7 +173,7 @@ npx tsx scripts/set-warmup.ts --mode=enable --tag=new --warmup-per-day=40 --ramp
 # 2. Set signatures
 npx tsx scripts/set-signatures.ts --tag=new --template="Best,\n{from_name}"
 
-# 3. Tag them as insurance (they aren't active yet — warmup for 2 weeks first)
+# 3. Tag them as insurance (they aren't active yet, warmup for 2 weeks first)
 npx tsx scripts/tag-inboxes.ts --tag=new --add-tag=insurance
 npx tsx scripts/tag-inboxes.ts --tag=new --remove-tag=new
 ```
@@ -199,7 +199,7 @@ npx tsx scripts/list-health.ts --all --out=health-$(date +%Y-%m-%d).csv
 
 Review the action items. Replace blocked inboxes.
 
-## The 1% rule — when to retire an inbox
+## The 1% rule, when to retire an inbox
 
 **A healthy inbox should have an overall reply rate of ≥1% after sending 200+ emails.** Below that, it's likely burned or has poor deliverability.
 
@@ -220,7 +220,7 @@ npx tsx scripts/set-warmup.ts --mode=disable --tag=retired
 - **Warmup settings are per-inbox.** There's no global setting. Scripts loop and hit each inbox individually.
 - **Rate-limiting.** Smartlead allows ~33 req/sec. The scripts use 5 concurrent by default. Don't crank this higher without testing.
 - **Warmup blocked.** If `is_warmup_blocked: true`, the inbox is flagged (usually for spam-like behavior in warmup). Manual investigation needed.
-- **Tags have no delete endpoint** in some Smartlead versions — tags can only be ADDED. To "remove" a tag, replace the full tag list with a new one that omits it. The script handles this automatically.
+- **Tags have no delete endpoint** in some Smartlead versions, tags can only be ADDED. To "remove" a tag, replace the full tag list with a new one that omits it. The script handles this automatically.
 - **Signature formatting.** HTML signatures can break rendering across Gmail/Outlook/Apple Mail. Keep it plain text or use minimal `<br>` tags. Test in Gmail/Outlook after setting.
 - **Warmup ramp accumulates.** If you set `daily_rampup: 5`, the inbox sends 1 on day 1, 6 on day 2, 11 on day 3... up to `total_warmup_per_day`. To reset (e.g. after a break), disable then re-enable.
 
@@ -234,14 +234,14 @@ npx tsx scripts/set-warmup.ts --mode=disable --tag=retired
 
 ## Related skills
 
-- `/zapmail-domain-setup-public` — creates the inboxes this skill configures
-- `/email-deliverability-audit` — when health dashboard shows problems
-- `/smartlead-api` — underlying API reference
+- `/zapmail-domain-setup-public`, creates the inboxes this skill configures
+- `/email-deliverability-audit`, when health dashboard shows problems
+- `/smartlead-api`, underlying API reference
 
 ## Scripts
 
-- `scripts/set-warmup.ts` — enable/disable warmup, configure ramp
-- `scripts/set-signatures.ts` — bulk signature setting
-- `scripts/tag-inboxes.ts` — add/remove tags
-- `scripts/list-health.ts` — health dashboard CSV + summary
-- `scripts/_lib.ts` — shared: API client, inbox selector parser, concurrency
+- `scripts/set-warmup.ts`, enable/disable warmup, configure ramp
+- `scripts/set-signatures.ts`, bulk signature setting
+- `scripts/tag-inboxes.ts`, add/remove tags
+- `scripts/list-health.ts`, health dashboard CSV + summary
+- `scripts/_lib.ts`, shared: API client, inbox selector parser, concurrency

@@ -5,7 +5,7 @@ description: Generates 15-25+ cold outbound campaign ideas with targeting strate
 
 # Campaign Strategy Skill
 
-You are a cold outbound campaign strategist. Your job is to generate **at least 15-20 campaign ideas** (more if you have strong ideas—never cut good ideas to hit an arbitrary limit) that range from broad targeting to highly niche targeting, each with a clear AI personalization strategy and value proposition.
+You are a cold outbound campaign strategist. Your job is to generate **at least 15-20 campaign ideas** (more if you have strong ideas, never cut good ideas to hit an arbitrary limit) that range from broad targeting to highly niche targeting, each with a clear AI personalization strategy and value proposition.
 
 ## Core Philosophy
 
@@ -33,7 +33,7 @@ Every offer in the world helps people:
 
 You will receive one or more of:
 - A website URL (minimum required input)
-- A `client-profile.yaml` produced by `/icp-onboarding` (strongly recommended — contains ICP + offer + hard/soft filters already codified)
+- A `client-profile.yaml` produced by `/icp-onboarding` (strongly recommended, contains ICP + offer + hard/soft filters already codified)
 - A `lead-magnets.md` from `/lead-magnet-brainstorm` (optional, but the chosen magnet shapes front-end offer suggestions)
 - Target audience parameters (titles, company size, location, industries)
 - Onboarding form responses
@@ -54,7 +54,7 @@ If a `client-profile.yaml` exists at `profiles/<slug>/`, load it first. Use its 
 
 #### Step 2: Systematic Page Crawling
 Visit these pages by finding them in the navigation (URLs vary by site):
-- **Customers/Case Studies page**: This is CRITICAL—extract EVERY customer mentioned
+- **Customers/Case Studies page**: This is CRITICAL, extract EVERY customer mentioned
 - **Features/Product page**: Specific capabilities, use cases, differentiators
 - **Pricing page**: Target market signals, tiers, buyer personas
 - **About page**: Company story, team, mission
@@ -110,7 +110,7 @@ All AI personalization must use **publicly available data**:
 - Hiring patterns
 
 **Data sources to AVOID:**
-- **G2, Capterra, Trustpilot reviews**: These platforms protect their data heavily. Do not suggest scraping reviewer names or review content—it's not reliably accessible.
+- **G2, Capterra, Trustpilot reviews**: These platforms protect their data heavily. Do not suggest scraping reviewer names or review content, it's not reliably accessible.
 - **Private revenue figures, internal metrics, proprietary databases**: We cannot access these.
 - **Freemium/existing user data**: Campaigns targeting people already using the product (e.g., free tier users, certification graduates) are nurture/PLG motions, not cold outbound. Flag these separately if suggested.
 
@@ -129,7 +129,7 @@ All AI personalization must use **publicly available data**:
 
 ### Advanced Data Enrichment Capabilities
 
-**Remember: Claygent (AI research agent) can find virtually ANY publicly available information.** If a human could find it with 10 minutes of Googling, Claygent can find it at scale. Be creative—we've gone as deep as finding high school football scores on Friday to email coaches about on Monday.
+**Remember: Claygent (AI research agent) can find virtually ANY publicly available information.** If a human could find it with 10 minutes of Googling, Claygent can find it at scale. Be creative, we've gone as deep as finding high school football scores on Friday to email coaches about on Monday.
 
 #### LinkedIn Data (High-Value Signals)
 - **LinkedIn Engagement**: People who liked/commented on specific posts, companies, or thought leaders
@@ -249,8 +249,8 @@ Go beyond the obvious. Push yourself to think of campaigns that a less creative 
 **IMPORTANT: Only invert signals that are reliably detectable.**
 - ✅ Job titles (reliably detectable via LinkedIn)
 - ✅ Job postings (reliably detectable)
-- ❌ Tech stack absence (unreliable—just because we don't detect a tool doesn't mean they don't use it)
-- ❌ "No enrichment tool detected" is dangerous—don't suggest this
+- ❌ Tech stack absence (unreliable, just because we don't detect a tool doesn't mean they don't use it)
+- ❌ "No enrichment tool detected" is dangerous, don't suggest this
 
 If you can't reliably prove the absence, don't build a campaign around it.
 
@@ -260,7 +260,7 @@ If you can't reliably prove the absence, don't build a campaign around it.
 
 **5. Estimate Hidden Data**
 - Estimate what data matters to their team based on their business
-- Suggest specific data points you could gather: "I bet your SDRs need to know [specific thing]—we can pull that automatically"
+- Suggest specific data points you could gather: "I bet your SDRs need to know [specific thing], we can pull that automatically"
 
 **6. Role-Specific Workflows**
 - What does a day in the life look like for the target role?
@@ -382,7 +382,7 @@ Before finalizing output, verify:
 - [ ] Campaigns ordered from broadest to most niche
 - [ ] **Creative Ideas campaign included** (required)
 - [ ] **New Hire campaign included** (required)
-- [ ] **Lookalike campaign included** (required—based on case study research)
+- [ ] **Lookalike campaign included** (required, based on case study research)
 - [ ] At least 2-3 "Creative Stretch" campaigns that go beyond the obvious
 - [ ] Each AI strategy uses only publicly available data
 - [ ] Campaign overviews have enough detail for copywriter handoff
@@ -390,7 +390,7 @@ Before finalizing output, verify:
 - [ ] Front-end offer suggestions included
 - [ ] Value propositions tied to: make money, save time, save money, or mitigate risk
 - [ ] At least one "Golden ICP" style campaign (what a rep would send after 10 min of manual research)
-- [ ] Customer discovery analysis completed—targeting challenged if research suggests broader ICP
+- [ ] Customer discovery analysis completed, targeting challenged if research suggests broader ICP
 
 ## Output Location
 
@@ -404,7 +404,7 @@ This is the handoff document for `/campaign-copywriting`. The copywriter skill r
 
 ## What to do next
 
-**Pick one campaign idea from the table above and run `/campaign-copywriting`** — it walks stepwise through copy direction → subject → body → final output, producing a `variants.yaml` ready for Smartlead upload.
+**Pick one campaign idea from the table above and run `/campaign-copywriting`**, it walks stepwise through copy direction → subject → body → final output, producing a `variants.yaml` ready for Smartlead upload.
 
 Don't try to write copy for all 20 campaigns at once. Pick one (usually the Creative Ideas or Lookalike campaign for the first launch), write copy for it, test it, learn, then pick the next.
 
@@ -412,8 +412,8 @@ Don't try to write copy for all 20 campaigns at once. Pick one (usually the Crea
 
 ## Related skills
 
-- `/icp-onboarding` — produces the `client-profile.yaml` this skill reads
-- `/lead-magnet-brainstorm` — picks the free offer this strategy builds around
-- `/campaign-copywriting` — writes the actual emails for campaigns defined here
-- `/cold-email-kickoff` — the orchestrator that runs ICP + lead magnet + this skill in sequence
+- `/icp-onboarding`, produces the `client-profile.yaml` this skill reads
+- `/lead-magnet-brainstorm`, picks the free offer this strategy builds around
+- `/campaign-copywriting`, writes the actual emails for campaigns defined here
+- `/cold-email-kickoff`, the orchestrator that runs ICP + lead magnet + this skill in sequence
 

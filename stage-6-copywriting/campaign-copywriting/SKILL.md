@@ -24,7 +24,7 @@ You are a cold email copywriter. Your job is to create high-converting cold emai
 
 ## How This Skill Works
 
-This skill operates like Typeform—you confirm key decisions at each step before proceeding. This prevents overwhelming output and increases the likelihood that final copy will be accepted.
+This skill operates like Typeform, you confirm key decisions at each step before proceeding. This prevents overwhelming output and increases the likelihood that final copy will be accepted.
 
 **The 4-Step Flow:**
 1. **Confirm Campaign Direction** - Research, summarize, get approval on overall approach
@@ -91,7 +91,7 @@ Use publicly available data to show you've done research and found a potential p
 - Example: "I saw the review from Mary mentioning [specific issue]..."
 
 **Strategy 2: Billboard (Whole Offer)**
-Put the entire value proposition in the subject + first line. Self-selecting—they either need it or don't.
+Put the entire value proposition in the subject + first line. Self-selecting, they either need it or don't.
 - Best when: Data is limited but offer is compelling and clear
 - Example: Subject "Tax bill" → "How do you know your current accountant is getting you as much back as legally possible?"
 - Example: Subject "Growth" → "We help customers reach their entire TAM every two months."
@@ -243,7 +243,7 @@ Once all decisions are confirmed, output the complete campaign.
 - [ ] No banned phrases
 - [ ] Word count 50-90 (or justified to 125 with strong AI)
 - [ ] CTA is low-effort
-- [ ] Em dashes are "—" not "--"
+- [ ] Em dashes are ", " not "--"
 ```
 
 ### Also emit a variants.yaml file (for upload)
@@ -295,7 +295,7 @@ sequences:
         body: "..."
 ```
 
-Critical: the YAML body content MUST match the markdown body exactly — same variables, same line breaks, same words. This is the same copy, just serialized for programmatic upload.
+Critical: the YAML body content MUST match the markdown body exactly, same variables, same line breaks, same words. This is the same copy, just serialized for programmatic upload.
 
 ---
 
@@ -315,7 +315,7 @@ Critical: the YAML body content MUST match the markdown body exactly — same va
 
 ## Hard Rules (Never Break These)
 
-1. **No em dashes** - Never use "—" in email copy. Use periods or commas instead.
+1. **No em dashes** - Never use ", " in email copy. Use periods or commas instead.
 2. **Company variable is always `{{company_name}}`** - Never use `{{company}}`
 3. **Never use "Curious" as a subject line** - Too generic
 4. **Personalized subject lines use lowercase** - "question for {{first_name}}" not "Question for {{first_name}}"
@@ -622,7 +622,7 @@ If it's interesting, happy to share what's working in {{industry}}.
 - **Email 3:** Still no reply → New thread, different angle, maybe drop AI
 - **Email 4:** Final email → Redirect OR offer resources
 
-**Key insight:** If they didn't reply to Email 1, that angle didn't resonate. Don't repeat it—rotate through different value propositions.
+**Key insight:** If they didn't reply to Email 1, that angle didn't resonate. Don't repeat it, rotate through different value propositions.
 
 ---
 
@@ -911,16 +911,16 @@ Now work stepwise with confidence.
 
 ## What to do next
 
-**Run `/spam-word-checker`** — it auto-triggers on any cold email draft. Make sure no banned phrases slipped in. Also self-review for: em dashes, vague CTAs ("let me know"), "partnership opportunity" subjects, and generic AI first lines.
+**Run `/spam-word-checker`**, it auto-triggers on any cold email draft. Make sure no banned phrases slipped in. Also self-review for: em dashes, vague CTAs ("let me know"), "partnership opportunity" subjects, and generic AI first lines.
 
-Then **run `/smartlead-campaign-upload-public`** — it takes your `variants.yaml` + a leads.csv and creates the campaign in Smartlead in DRAFT mode. You review in the Smartlead UI and hit Start manually.
+Then **run `/smartlead-campaign-upload-public`**, it takes your `variants.yaml` + a leads.csv and creates the campaign in Smartlead in DRAFT mode. You review in the Smartlead UI and hit Start manually.
 
-**Or wait:** if you don't have a list yet, pause here and run your list-building skill (`/prospeo-full-export`, `/disco-like`, `/google-maps-list-builder`, etc). Save the `variants.yaml` — it'll be waiting when you're ready.
+**Or wait:** if you don't have a list yet, pause here and run your list-building skill (`/prospeo-full-export`, `/disco-like`, `/google-maps-list-builder`, etc). Save the `variants.yaml`, it'll be waiting when you're ready.
 
 ## Related skills
 
-- `/campaign-strategy` — produces the campaign brief this skill writes copy for
-- `/icp-onboarding` — produces `client-profile.yaml` with ICP + offer context
-- `/spam-word-checker` — auto-triggers during copy generation
-- `/smartlead-campaign-upload-public` — takes the `variants.yaml` this skill produces and uploads to Smartlead
+- `/campaign-strategy`, produces the campaign brief this skill writes copy for
+- `/icp-onboarding`, produces `client-profile.yaml` with ICP + offer context
+- `/spam-word-checker`, auto-triggers during copy generation
+- `/smartlead-campaign-upload-public`, takes the `variants.yaml` this skill produces and uploads to Smartlead
 

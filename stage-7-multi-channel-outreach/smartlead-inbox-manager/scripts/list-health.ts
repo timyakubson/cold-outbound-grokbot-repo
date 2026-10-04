@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * Inbox health dashboard — prints summary + optional CSV.
+ * Inbox health dashboard, prints summary + optional CSV.
  *
  * Usage:
  *   export SMARTLEAD_API_KEY=xxx
@@ -127,9 +127,9 @@ async function main() {
   console.log(`  Bad:   ${repBad}`);
 
   console.log(`\nAction items:`);
-  if (blocked) console.log(`  - ${blocked} inboxes blocked — run /email-deliverability-audit`);
-  if (repBad) console.log(`  - ${repBad} inboxes with bad reputation — consider pausing`);
-  if (failedConn) console.log(`  - ${failedConn} inboxes with connection failures — reconnect or replace`);
+  if (blocked) console.log(`  - ${blocked} inboxes blocked, run /email-deliverability-audit`);
+  if (repBad) console.log(`  - ${repBad} inboxes with bad reputation, consider pausing`);
+  if (failedConn) console.log(`  - ${failedConn} inboxes with connection failures, reconnect or replace`);
   if (!blocked && !repBad && !failedConn) console.log(`  - None; everything looks healthy.`);
 
   if (out) {

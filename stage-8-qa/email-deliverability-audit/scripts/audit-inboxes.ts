@@ -101,7 +101,7 @@ async function main() {
   }
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, csv.join("\n"));
-  console.error(`Wrote ${out} — ${rows.length} inboxes`);
+  console.error(`Wrote ${out}, ${rows.length} inboxes`);
 }
 
 main().catch((e) => {

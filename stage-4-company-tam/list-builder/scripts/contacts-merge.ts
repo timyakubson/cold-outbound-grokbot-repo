@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * Phase 4 merge — normalize contact pulls from any provider into one deduped file.
+ * Phase 4 merge, normalize contact pulls from any provider into one deduped file.
  * NO CAPS: every matching person at every company is kept.
  *
  * Usage:

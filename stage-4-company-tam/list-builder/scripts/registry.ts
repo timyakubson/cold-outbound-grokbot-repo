@@ -1,11 +1,11 @@
 /**
- * judged_domains registry — WAL-first with opportunistic Supabase sync (WS5).
+ * judged_domains registry, WAL-first with opportunistic Supabase sync (WS5).
  *
  * Design (from 2026-07-05 review): the per-run ndjson WAL is the source of
  * truth for the run; the Postgres table `list_builder_judged_domains` (any
  * Postgres/Supabase database, via LIST_REGISTRY_DB_URL) is the cross-run
   * index. Reads for dedup = Postgres rows + any unsynced local WAL tails.
- * Never a silent CSV fallback — if Supabase is unreachable, say so loudly and
+ * Never a silent CSV fallback, if Supabase is unreachable, say so loudly and
  * return WAL-only results (the caller's summary must show which mode ran).
  *
  * Verdict stages: nano_qualified | nano_rejected | verified | verify_rejected | enrich_failed
@@ -47,7 +47,7 @@ export function walRead(runDir: string): JudgedRow[] {
   const rows: JudgedRow[] = [];
   for (const line of readFileSync(p, "utf8").split("\n")) {
     if (!line.trim()) continue;
-    try { rows.push(JSON.parse(line)); } catch { /* torn final line — tolerated */ }
+    try { rows.push(JSON.parse(line)); } catch { /* torn final line, tolerated */ }
   }
   return rows;
 }
@@ -62,7 +62,7 @@ function dbUrl(): string | null {
 function psql(sql: string): string {
   const url = dbUrl();
   if (!url) throw new Error("LIST_REGISTRY_DB_URL not set");
-  // SQL goes via STDIN and the URL via env — nothing is interpolated into the
+  // SQL goes via STDIN and the URL via env, nothing is interpolated into the
   // shell, so backticks/$/quotes in company names can't break or inject.
   return execSync(`psql "$REGISTRY_DB_URL" -v ON_ERROR_STOP=1 -t -A -f -`, {
     encoding: "utf8", maxBuffer: 512 * 1024 * 1024, timeout: 120_000,
@@ -75,7 +75,7 @@ export function registryFetch(clientSlug: string, lane?: string): { domains: Set
   const domains = new Set<string>();
   let mode: "db" | "wal-only" = "db";
   if (!dbUrl()) {
-    console.error("registry: LIST_REGISTRY_DB_URL not set — WAL-ONLY dedup (cross-run dedup disabled)");
+    console.error("registry: LIST_REGISTRY_DB_URL not set, WAL-ONLY dedup (cross-run dedup disabled)");
     mode = "wal-only";
   } else try {
     const where = lane ? `client_slug='${clientSlug}' AND lane='${lane}'` : `client_slug='${clientSlug}'`;
@@ -83,7 +83,7 @@ export function registryFetch(clientSlug: string, lane?: string): { domains: Set
       if (line.trim()) domains.add(line.trim());
     }
   } catch (e) {
-    console.error(`⚠️ registry: registry DB unreachable (${String(e).slice(0, 80)}) — WAL-ONLY dedup this run`);
+    console.error(`⚠️ registry: registry DB unreachable (${String(e).slice(0, 80)}), WAL-ONLY dedup this run`);
     mode = "wal-only";
   }
   // union all unsynced WAL tails across run dirs for this client
@@ -108,10 +108,10 @@ export function registrySync(runDir: string): { synced: number; skipped: number;
   const todo = rows.slice(already);
   if (!todo.length) return { synced: 0, skipped: rows.length };
   // A domain legitimately appears multiple times in the WAL (nano verdict, then
-  // verify verdict). One INSERT can't upsert the same PK twice — keep the LAST
+  // verify verdict). One INSERT can't upsert the same PK twice, keep the LAST
   // row per key (verdicts only ever progress forward).
   const latest = new Map<string, JudgedRow>();
-  // Empty-domain rows (CSV multiline artifacts) violate the NOT NULL PK — skip them.
+  // Empty-domain rows (CSV multiline artifacts) violate the NOT NULL PK, skip them.
   for (const r of todo) if (r.domain && r.domain.includes(".")) latest.set(`${r.domain}|${r.client_slug}|${r.lane}`, r);
   const deduped = [...latest.values()];
   const esc = (v: unknown) => v == null || v === "" ? "NULL" : `'${String(v).replace(/'/g, "''")}'`;

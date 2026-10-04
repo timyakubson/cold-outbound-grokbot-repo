@@ -5,13 +5,13 @@ description: Triage playbook for when cold email deliverability breaks. Decision
 
 # Deliverability Incident Response
 
-Things break. When they do, you need a playbook — not panic. This skill is the triage decision tree.
+Things break. When they do, you need a playbook, not panic. This skill is the triage decision tree.
 
 ## The five incident types
 
 | Symptom | Most likely cause | First action | Fix time |
 |---|---|---|---|
-| Reply rate dropped sharply | Deliverability — emails in spam | Run spam placement test | 1-14 days |
+| Reply rate dropped sharply | Deliverability, emails in spam | Run spam placement test | 1-14 days |
 | Bounce rate spiked >3% | Bad list OR domain reputation | Check bounce types | 1-3 days |
 | Domain blacklisted | Shared IP bad actor OR your domain got flagged | Check blacklists, rotate if needed | 7-30 days |
 | Inbox blocked in warmup | Warmup network flagged sending patterns | Pause, investigate, maybe replace | 1-7 days |
@@ -37,7 +37,7 @@ Are ALL campaigns dropping, or just one?
   One → campaign-specific (targeting, copy, list)
 ```
 
-### Step 3: Fleet-wide drop — check these in order
+### Step 3: Fleet-wide drop, check these in order
 
 1. **Smartlead Smart Delivery spam test** (`/email-deliverability-audit` → `run-spam-test.ts`)
    - If inbox placement <70% → real deliverability issue, skip to Step 4
@@ -55,13 +55,13 @@ Are ALL campaigns dropping, or just one?
    - If bounce >3% → list quality degraded
    - If bounce <1% but reply rate low → emails landing in spam (Step 1 result)
 
-### Step 4: You have a spam-placement problem — what to do
+### Step 4: You have a spam-placement problem, what to do
 
 Time-ordered actions:
 
 1. **Immediate (today):** Pause the highest-volume campaign. Stop damage.
 2. **Day 1:** Run spam placement test on 2-3 sender subsets (tag=active vs tag=new). Find which cohort is worst.
-3. **Day 1:** Check the spam-filter-details report from Smart Delivery — specifically which filters are firing. Common: `DKIM_INVALID`, `HTML_MESSAGE`, `LINK_REDIRECT`. Each has a specific fix.
+3. **Day 1:** Check the spam-filter-details report from Smart Delivery, specifically which filters are firing. Common: `DKIM_INVALID`, `HTML_MESSAGE`, `LINK_REDIRECT`. Each has a specific fix.
 4. **Day 2:** Fix the identified issues:
    - DKIM_INVALID → verify DKIM records across all domains, re-publish if needed
    - HTML_MESSAGE → simplify email body (fewer fonts, no inline CSS, no tracking pixels)
@@ -143,7 +143,7 @@ npx tsx scripts/tag-inboxes.ts --ids=<id> --add-tag=retired --remove-tag=active
 # Disable warmup
 npx tsx scripts/set-warmup.ts --mode=disable --ids=<id>
 
-# Replace — buy new domain, create new inbox
+# Replace, buy new domain, create new inbox
 # See /zapmail-domain-setup-public
 ```
 
@@ -163,12 +163,12 @@ Send the campaign's email 1 to a fresh @gmail.com account (yours, not in the cam
 - Images / inline images → remove them
 - Heavy HTML styling → simplify, fewer tags
 - Marketing-style phrases ("click here", "act now", "limited time") → remove
-- Unsubscribe in header (List-Unsubscribe) — actually helps deliverability, but formatting must be correct
+- Unsubscribe in header (List-Unsubscribe), actually helps deliverability, but formatting must be correct
 - Mass signature blocks with logos → simplify to text-only
 
 ### Step 3: A/B test
 
-Create two versions — your current and a stripped-down version. Send 50 leads each. Check which has better reply rate after 7 days.
+Create two versions, your current and a stripped-down version. Send 50 leads each. Check which has better reply rate after 7 days.
 
 ## The 72-hour "total failure" checklist
 
@@ -177,10 +177,10 @@ If NOTHING is working and you don't know why:
 1. **Pause all campaigns.** Stop damage.
 2. **Audit:** run `/email-deliverability-audit` full suite
 3. **Spam test:** run Smart Delivery on 2 sender subsets
-4. **Check SPF/DKIM/DMARC on every domain** — if ANY are missing, fix before resuming
-5. **Check Zapmail health dashboard** — if their IPs are in trouble, everyone on their pool is too
+4. **Check SPF/DKIM/DMARC on every domain**, if ANY are missing, fix before resuming
+5. **Check Zapmail health dashboard**, if their IPs are in trouble, everyone on their pool is too
 6. **Reduce volume 75%** for the restart
-7. **Use a known-good copy** — don't launch new copy during recovery
+7. **Use a known-good copy**, don't launch new copy during recovery
 8. **Watch reply rate daily** for 7 days post-restart
 
 ## When to call in experts
@@ -191,7 +191,7 @@ If NOTHING is working and you don't know why:
 
 ## What to do next
 
-**Re-run `/email-deliverability-audit --days=7` in 7 days** to confirm recovery. Domain/inbox reputation rebuilds slowly — don't re-audit before the 7-day window.
+**Re-run `/email-deliverability-audit --days=7` in 7 days** to confirm recovery. Domain/inbox reputation rebuilds slowly, don't re-audit before the 7-day window.
 
 Meanwhile: continue the weekly rhythm via `/cold-email-weekly-rhythm`, which catches new issues as they emerge.
 
@@ -199,11 +199,11 @@ Meanwhile: continue the weekly rhythm via `/cold-email-weekly-rhythm`, which cat
 
 ## Related skills
 
-- `/email-deliverability-audit` — the diagnostic suite you run first
-- `/smartlead-inbox-manager` — tag, rotate, retire inboxes
-- `/zapmail-domain-setup-public` — replace a burned domain
-- `/positive-reply-scoring` — confirm recovery (reply rate back to baseline)
+- `/email-deliverability-audit`, the diagnostic suite you run first
+- `/smartlead-inbox-manager`, tag, rotate, retire inboxes
+- `/zapmail-domain-setup-public`, replace a burned domain
+- `/positive-reply-scoring`, confirm recovery (reply rate back to baseline)
 
 ## The 1% rule sanity check
 
-After fixes, give it at least 200 sends at your normal volume. If reply rate is still <1% — there's a deeper issue. Start the playbook over.
+After fixes, give it at least 200 sends at your normal volume. If reply rate is still <1%, there's a deeper issue. Start the playbook over.

@@ -132,7 +132,7 @@ async function main() {
         seq_delay_details: { delay_in_days: 0 },
         seq_variants: variants.map((v: any) => ({
           variant_label: v.variant,
-          subject: (v.subject || "").replace(/—/g, " - ").replace(/–/g, " - "),
+          subject: (v.subject || "").replace(/, /g, " - ").replace(/-/g, " - "),
           email_body: buildBody(v.variant, campaignId, v.body_template),
         })),
       },

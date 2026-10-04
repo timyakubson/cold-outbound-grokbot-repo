@@ -7,8 +7,8 @@
  *   - flag_high_bounce = TRUE if sent >= 50 AND bounce_rate > 3%
  *
  * Two output files:
- *   1. <out>-campaigns.csv — campaign-level aggregates (authoritative for 1% rule)
- *   2. <out>-inboxes.csv    — best-effort per-inbox stats from mailbox-statistics
+ *   1. <out>-campaigns.csv, campaign-level aggregates (authoritative for 1% rule)
+ *   2. <out>-inboxes.csv   , best-effort per-inbox stats from mailbox-statistics
  *
  * Usage:
  *   export SMARTLEAD_API_KEY=xxx
@@ -182,7 +182,7 @@ async function main() {
     { email: string; sent: number; replies: number; bounces: number; campaigns: Set<number> }
   >();
   const sampledCampaigns = campaignRows.filter((c) => c.sent > 0).slice(0, 50);
-  // mailbox-statistics only returns recent events (capped ~20 rows) — use for recent per-inbox hints
+  // mailbox-statistics only returns recent events (capped ~20 rows), use for recent per-inbox hints
   // For proper per-inbox aggregates across the whole campaign, campaign-level flagging is more reliable
   for (const c of sampledCampaigns) {
     try {
@@ -304,7 +304,7 @@ async function main() {
   }
 
   console.log(`\nOutputs:`);
-  console.log(`  ${out}-campaigns.csv  (authoritative — use this for 1% rule)`);
+  console.log(`  ${out}-campaigns.csv  (authoritative, use this for 1% rule)`);
   console.log(`  ${out}-inboxes.csv    (best-effort per-inbox aggregation)`);
 }
 

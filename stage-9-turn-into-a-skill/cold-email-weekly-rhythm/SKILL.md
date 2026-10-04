@@ -1,6 +1,6 @@
 ---
 name: cold-email-weekly-rhythm
-description: Operational playbook for running cold email continuously. Prescribes what to do on Monday / Wednesday / Friday / biweekly / monthly / quarterly. Use this as your ongoing cadence once your first campaign is live. What separates hobbyist from top 1% operators isn't tooling — it's consistency. This skill is the schedule.
+description: Operational playbook for running cold email continuously. Prescribes what to do on Monday / Wednesday / Friday / biweekly / monthly / quarterly. Use this as your ongoing cadence once your first campaign is live. What separates hobbyist from top 1% operators isn't tooling, it's consistency. This skill is the schedule.
 ---
 
 # Cold Email Weekly Rhythm
@@ -24,11 +24,11 @@ Open Google Calendar / Outlook / Apple Reminders / whatever you actually look at
 | Cold email: Monthly spam placement test | 1st of each month, 10:00 am |
 | Cold email: Quarterly experiment review | First Monday of each quarter, 1:00 pm |
 
-**Do not skip Step 1.** The difference between hobbyist and top-1% cold email operators is that the top-1% operators actually run these tasks on their declared cadence, week after week. Your calendar is the accountability system. This skill doesn't have a built-in reminder — intentionally — because if it did and it broke, your ops would silently fail.
+**Do not skip Step 1.** The difference between hobbyist and top-1% cold email operators is that the top-1% operators actually run these tasks on their declared cadence, week after week. Your calendar is the accountability system. This skill doesn't have a built-in reminder, intentionally, because if it did and it broke, your ops would silently fail.
 
 ---
 
-## Monday — Deliverability audit (15 min)
+## Monday, Deliverability audit (15 min)
 
 **Run:**
 
@@ -40,7 +40,7 @@ Open Google Calendar / Outlook / Apple Reminders / whatever you actually look at
 
 **Review:**
 
-- Fleet reply rate over last 7 days — must be ≥1% (the 1% rule)
+- Fleet reply rate over last 7 days, must be ≥1% (the 1% rule)
 - Flagged campaigns (`flag_low_reply = TRUE`)
 - Flagged inboxes (`flag_high_bounce = TRUE`)
 
@@ -52,7 +52,7 @@ Open Google Calendar / Outlook / Apple Reminders / whatever you actually look at
 
 ---
 
-## Wednesday — Positive-reply sweep (30-60 min depending on volume)
+## Wednesday, Positive-reply sweep (30-60 min depending on volume)
 
 **Run:**
 
@@ -62,13 +62,13 @@ Open Google Calendar / Outlook / Apple Reminders / whatever you actually look at
 
 **Review:**
 
-- Any `positive_interested` or `positive_soft` replies — these are leads wanting to engage
-- Any `positive_referral` replies — these are people saying "talk to Jane instead"
-- Any `negative_hostile` replies — red flag, investigate
+- Any `positive_interested` or `positive_soft` replies, these are leads wanting to engage
+- Any `positive_referral` replies, these are people saying "talk to Jane instead"
+- Any `negative_hostile` replies, red flag, investigate
 
 **Action:**
 
-- Respond to every `positive_interested` reply within 30 seconds of seeing it. Do not batch these — a reply feeling like it took minutes to return converts 3× better than one that took hours.
+- Respond to every `positive_interested` reply within 30 seconds of seeing it. Do not batch these, a reply feeling like it took minutes to return converts 3× better than one that took hours.
 - For referrals: reach out to the referred person within 24h, mention the referrer by name.
 - For hostile: apologize, remove from all lists, investigate why they were flagged for hostility (often signals bad targeting).
 
@@ -76,7 +76,7 @@ Open Google Calendar / Outlook / Apple Reminders / whatever you actually look at
 
 ---
 
-## Friday — Campaign retrospectives (20 min per campaign)
+## Friday, Campaign retrospectives (20 min per campaign)
 
 **Identify campaigns hitting their 21-day mark this week.** (21 days is the minimum for reply-rate signal to stabilize.)
 
@@ -86,7 +86,7 @@ For each one:
 2. Compare to previous campaigns' positive reply rate baselines
 3. Decide:
    - **Winner (positive reply rate ≥2×baseline):** keep running, consider scaling (clone to more inboxes)
-   - **Middling (near baseline):** iterate on copy or list — run `/experiment-design` Monday to plan the next variant
+   - **Middling (near baseline):** iterate on copy or list, run `/experiment-design` Monday to plan the next variant
    - **Loser (<50% of baseline):** kill it. Document why in the experiment log.
 
 4. Log the result in `profiles/<slug>/experiments/<YYYY-MM-DD>-<campaign>.json`:
@@ -98,7 +98,7 @@ For each one:
 
 ---
 
-## Every other Monday — Inbox rotation (30 min)
+## Every other Monday, Inbox rotation (30 min)
 
 **Run:**
 
@@ -129,7 +129,7 @@ npx tsx scripts/set-warmup.ts --mode=disable --ids=A,B,C
 
 ---
 
-## Monthly (1st of the month) — Spam placement test (25 min active, test runs ~20 min)
+## Monthly (1st of the month), Spam placement test (25 min active, test runs ~20 min)
 
 **Run:** the Smart Delivery spam placement test from `/email-deliverability-audit`:
 
@@ -137,12 +137,12 @@ npx tsx scripts/set-warmup.ts --mode=disable --ids=A,B,C
 npx tsx scripts/run-spam-test.ts --campaign-id=<highest volume active campaign> --senders=100
 ```
 
-(Will use G Suite + Office365 provider pools. 100 senders is a sweet spot — large enough for statistical signal, small enough to avoid API stalls.)
+(Will use G Suite + Office365 provider pools. 100 senders is a sweet spot, large enough for statistical signal, small enough to avoid API stalls.)
 
 **Review:**
 
-- Overall inbox placement % — target: ≥85%
-- Spam filter triggers — which filters fired, which senders affected
+- Overall inbox placement %, target: ≥85%
+- Spam filter triggers, which filters fired, which senders affected
 
 **Action:**
 
@@ -152,7 +152,7 @@ npx tsx scripts/run-spam-test.ts --campaign-id=<highest volume active campaign> 
 
 ---
 
-## Quarterly (first Monday of each quarter) — Experiment review (90 min)
+## Quarterly (first Monday of each quarter), Experiment review (90 min)
 
 Read all `experiments/*.json` from the last quarter. Identify patterns:
 
@@ -178,7 +178,7 @@ You do NOT need to:
 
 - Check Smartlead every day (Wednesday sweep catches everything important)
 - Obsess over daily reply-rate fluctuations (wait for 7-day averages)
-- Read every positive reply in real time — set up notifications if you want immediacy, but the Wednesday sweep is the system
+- Read every positive reply in real time, set up notifications if you want immediacy, but the Wednesday sweep is the system
 
 Daily pokes at your cold email stack are a procrastination pattern, not a performance pattern.
 
@@ -192,9 +192,9 @@ This skill IS the loop. Your next action is the next calendar event on your list
 
 ## Related skills
 
-- `/email-deliverability-audit` — the Monday and Monthly tasks
-- `/positive-reply-scoring` — the Wednesday and Friday tasks
-- `/smartlead-inbox-manager` — the biweekly inbox rotation
-- `/deliverability-incident-response` — when the Monday audit flags something
-- `/experiment-design` — the quarterly retrospective feeds into this
-- `/zapmail-domain-setup-public` — when insurance pool runs low
+- `/email-deliverability-audit`, the Monday and Monthly tasks
+- `/positive-reply-scoring`, the Wednesday and Friday tasks
+- `/smartlead-inbox-manager`, the biweekly inbox rotation
+- `/deliverability-incident-response`, when the Monday audit flags something
+- `/experiment-design`, the quarterly retrospective feeds into this
+- `/zapmail-domain-setup-public`, when insurance pool runs low

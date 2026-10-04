@@ -1,16 +1,16 @@
 #!/usr/bin/env tsx
 /**
- * contacts.ts — Phase 4+5 driver (WS8): qualified companies → send-ready leads.
+ * contacts.ts, Phase 4+5 driver (WS8): qualified companies → send-ready leads.
  *
  *     npx tsx contacts.ts --config=<lane.json>            (after lane is READY)
  *
- * Waterfall (hard rules — ALL matching titles, NEVER capped, provider emails
+ * Waterfall (hard rules, ALL matching titles, NEVER capped, provider emails
  * never trusted):
- *   1. GetLeads export (free) — 500-domain batches, ALL seniorities/titles.
+ *   1. GetLeads export (free), 500-domain batches, ALL seniorities/titles.
  *   2. Blitz find-contacts for domains GetLeads left at zero coverage.
  *   3. Prospeo /search-person LAST for still-zero domains (paid).
  *   4. contacts-merge → leads-final.csv (contacts with a provider email;
- *      validate with MillionVerifier before sending — see SKILL.md "Emails").
+ *      validate with MillionVerifier before sending, see SKILL.md "Emails").
  *
  * Stages (contacts-state.json, same artifact-based resume as run-lane):
  *   GETLEADS → COVERAGE → BLITZ → PROSPEO_PEOPLE → MERGE → EMAILS → REPORT
@@ -55,8 +55,8 @@ function getleadsSeniorities(): string[] {
   const mapped = [...new Set(SENIORITIES.map((s: string) => GETLEADS_SENIORITY_MAP[s.trim()] ?? s.trim()))];
   const valid = mapped.filter((v) => GETLEADS_VALID_SENIORITIES.has(v));
   const dropped = mapped.filter((v) => !GETLEADS_VALID_SENIORITIES.has(v));
-  if (dropped.length) console.error(`!! GETLEADS: dropping unmappable seniority value(s) [${dropped.join(", ")}] — live enum is [${[...GETLEADS_VALID_SENIORITIES].join(", ")}]; sending an invalid value hard-errors the entire batch. Extend GETLEADS_SENIORITY_MAP if these matter.`);
-  if (!valid.length) throw new Error(`GETLEADS FATAL: no valid seniority values after mapping lane seniorities [${SENIORITIES.join(",")}] — fix GETLEADS_SENIORITY_MAP in contacts.ts`);
+  if (dropped.length) console.error(`!! GETLEADS: dropping unmappable seniority value(s) [${dropped.join(", ")}], live enum is [${[...GETLEADS_VALID_SENIORITIES].join(", ")}]; sending an invalid value hard-errors the entire batch. Extend GETLEADS_SENIORITY_MAP if these matter.`);
+  if (!valid.length) throw new Error(`GETLEADS FATAL: no valid seniority values after mapping lane seniorities [${SENIORITIES.join(",")}], fix GETLEADS_SENIORITY_MAP in contacts.ts`);
   return valid;
 }
 
@@ -64,7 +64,7 @@ const statePath = join(runDir, "contacts-state.json");
 const state: Record<string, { status: string; note?: string }> = existsSync(statePath) ? JSON.parse(readFileSync(statePath, "utf8")) : {};
 function save(): void { const t = statePath + ".tmp"; writeFileSync(t, JSON.stringify(state, null, 2)); renameSync(t, statePath); }
 function done(stage: string): boolean { return state[stage]?.status === "done"; }
-function mark(stage: string, note?: string): void { state[stage] = { status: "done", note }; save(); console.log(`✓ ${stage}${note ? ` — ${note}` : ""}`); }
+function mark(stage: string, note?: string): void { state[stage] = { status: "done", note }; save(); console.log(`✓ ${stage}${note ? `, ${note}` : ""}`); }
 
 const A = {
   final: join(runDir, "lane-final.csv"),
@@ -88,18 +88,18 @@ async function main() {
   }
   const domains = [...new Set(readCsv(A.final).map((r) => normDomain(r.domain)).filter(Boolean))];
   const nameByDomain = new Map(readCsv(A.final).map((r) => [normDomain(r.domain), r.name]));
-  console.log(`contacts for ${laneId}: ${domains.length} companies — NO CAPS, all matching titles`);
+  console.log(`contacts for ${laneId}: ${domains.length} companies, NO CAPS, all matching titles`);
 
   // 1. GETLEADS
   // NOTE (provider result caps, 2026-07-14): unlike Prospeo /search-company (hard
-  // ~24k/filter tail truncation — auto-sharded in pull.ts), GetLeads export has no
+  // ~24k/filter tail truncation, auto-sharded in pull.ts), GetLeads export has no
   // observed per-query result cap here (we batch domains 500/call and paginate the
   // export to completion), so no sharding is needed. If a future GetLeads response
   // ever caps total rows, shard the domain batch the same way pull.ts shards states.
   if (!done("GETLEADS") && !hasGetleadsKey()) {
     // OPTIONAL provider: no key ⇒ every domain falls through to Blitz/Prospeo below.
     writeCsv(A.getleads, []);
-    mark("GETLEADS", "skipped: GETLEADS_API_KEY not set — Blitz/Prospeo will cover every domain");
+    mark("GETLEADS", "skipped: GETLEADS_API_KEY not set, Blitz/Prospeo will cover every domain");
   }
   if (!done("GETLEADS")) {
     let total = 0;
@@ -119,19 +119,19 @@ async function main() {
         // same way, and swallowing this exact error class is what silently produced
         // zero-GetLeads lanes when the seniority enum changed (2026-08). Never continue.
         if (/invalid seniority|"field"\s*:\s*"seniority"|invalid.*value\(s\)/i.test(msg)) {
-          throw new Error(`GETLEADS FATAL (enum rejected by API): ${msg.slice(0, 300)}\nThe live seniority enum has changed again — update GETLEADS_VALID_SENIORITIES + GETLEADS_SENIORITY_MAP in contacts.ts. Refusing to continue: proceeding here would mark the stage done with ZERO GetLeads contacts.`);
+          throw new Error(`GETLEADS FATAL (enum rejected by API): ${msg.slice(0, 300)}\nThe live seniority enum has changed again, update GETLEADS_VALID_SENIORITIES + GETLEADS_SENIORITY_MAP in contacts.ts. Refusing to continue: proceeding here would mark the stage done with ZERO GetLeads contacts.`);
         }
         failedBatches++;
         console.error(`!! GETLEADS batch ${i / 500 + 1} FAILED: ${msg.slice(0, 200)}`);
       }
     }
     if (failedBatches && parts.length === 0) {
-      throw new Error(`GETLEADS FATAL: all ${failedBatches} batch(es) failed — refusing to mark the primary contact stage done with zero GetLeads contacts. Fix the error above and re-run (stage resumes).`);
+      throw new Error(`GETLEADS FATAL: all ${failedBatches} batch(es) failed, refusing to mark the primary contact stage done with zero GetLeads contacts. Fix the error above and re-run (stage resumes).`);
     }
     // concat parts
     const rows = parts.flatMap((p) => (existsSync(p) ? readCsv(p) : []));
     writeCsv(A.getleads, rows);
-    mark("GETLEADS", `${rows.length} contacts${failedBatches ? ` — WARNING: ${failedBatches} batch(es) FAILED, GetLeads coverage incomplete (Blitz/Prospeo will over-cover those domains)` : ""}`);
+    mark("GETLEADS", `${rows.length} contacts${failedBatches ? `, WARNING: ${failedBatches} batch(es) FAILED, GetLeads coverage incomplete (Blitz/Prospeo will over-cover those domains)` : ""}`);
   }
 
   // 2. COVERAGE
@@ -145,7 +145,7 @@ async function main() {
   // 3. BLITZ (free on Unlimited) for zero-coverage domains
   // TODO (provider cap): Blitz Employee Finder caps at max-pages × max-results per
   // company (default 1×25 = 25 people/domain). This is a PER-COMPANY cap, not a
-  // filter-result cap, so it never truncates the domain set — but it can under-pull
+  // filter-result cap, so it never truncates the domain set, but it can under-pull
   // people at large companies. Raise --max-pages in find-contacts.ts for lanes that
   // target big employers if a domain returns exactly 25 (the page-1 ceiling).
   if (!done("BLITZ")) {
@@ -159,8 +159,8 @@ async function main() {
       writeCsv(zin, zero.map((d) => ({ domain: d, company_name: nameByDomain.get(d) ?? d })));
       // find-contacts.ts interface: --domains-file (NOT --in); wrong flag = usage-print + exit 1 (2026-07-08)
       const code = tsx(blitzScript, [`--domains-file=${zin}`, `--out=${A.blitz}`, `--titles=${cfg.blitz_titles ?? "owner,co-owner,founder,co-founder,ceo,president,general manager,managing member,managing partner,principal,proprietor"}`, "--concurrency=25"]);
-      mark("BLITZ", code === 0 ? `${existsSync(A.blitz) ? readCsv(A.blitz).length : 0} contacts` : "blitz failed — Prospeo will cover");
-    } else mark("BLITZ", zero.length ? "skipped: blitz-list-builder/scripts/find-contacts.ts not found (or BLITZ_API_KEY unset) — Prospeo will cover" : "not needed");
+      mark("BLITZ", code === 0 ? `${existsSync(A.blitz) ? readCsv(A.blitz).length : 0} contacts` : "blitz failed, Prospeo will cover");
+    } else mark("BLITZ", zero.length ? "skipped: blitz-list-builder/scripts/find-contacts.ts not found (or BLITZ_API_KEY unset), Prospeo will cover" : "not needed");
   }
 
   // 4. PROSPEO people for STILL-zero domains
@@ -188,7 +188,7 @@ async function main() {
 
   // 5. MERGE
   if (!done("MERGE")) {
-    // lane-scoped merge dir — a shared "__contacts__" slug let a second lane's run
+    // lane-scoped merge dir, a shared "__contacts__" slug let a second lane's run
     // overwrite the first lane's merged contacts (bit us 2026-07-08)
     const mergeSlug = `__contacts__${laneId}`;
     const argv = [`--run=${mergeSlug}`, `--csv=${A.getleads}:getleads`];
@@ -201,11 +201,11 @@ async function main() {
     mark("MERGE", `${readCsv(A.merged).length} unique contacts`);
   }
 
-  // 6. EMAILS — keep every merged contact that has a provider email.
+  // 6. EMAILS, keep every merged contact that has a provider email.
   // GetLeads / Blitz / Prospeo all return an email + status per person. Rows whose
   // provider says "verified"/"valid" are flagged email_status=verified; everything
   // else is "unverified". Validate the whole file with MillionVerifier before you
-  // upload (see SKILL.md "Emails") — never send to unverified/catch-all addresses.
+  // upload (see SKILL.md "Emails"), never send to unverified/catch-all addresses.
   if (!done("EMAILS")) {
     const rows = readCsv(A.merged);
     const okStatus = /^(verified|valid|deliverable|ok|safe)$/i;
@@ -216,13 +216,13 @@ async function main() {
     }));
     writeCsv(A.leadsFinal, leads);
     const nv = leads.filter((l) => l.email_status === "verified").length;
-    mark("EMAILS", `${leads.length} contacts with an email (${nv} provider-verified) — validate with MillionVerifier before sending`);
+    mark("EMAILS", `${leads.length} contacts with an email (${nv} provider-verified), validate with MillionVerifier before sending`);
   }
 
   // 7. REPORT
   saveMetrics(runDir, { contacts_stage: true });
   const leads = existsSync(A.leadsFinal) ? readCsv(A.leadsFinal).length : 0;
   const merged = existsSync(A.merged) ? readCsv(A.merged).length : 0;
-  console.log(`\n# CONTACTS DONE — ${laneId}\n- companies: ${domains.length}\n- unique contacts: ${merged}\n- contacts with an email: ${leads} (see email_status column; run MillionVerifier before upload)\n- artifacts: ${A.leadsFinal}\nNext: upload to campaign platform per client instructions (leads-final.csv).`);
+  console.log(`\n# CONTACTS DONE, ${laneId}\n- companies: ${domains.length}\n- unique contacts: ${merged}\n- contacts with an email: ${leads} (see email_status column; run MillionVerifier before upload)\n- artifacts: ${A.leadsFinal}\nNext: upload to campaign platform per client instructions (leads-final.csv).`);
 }
 main().then(() => process.exit(0)).catch((e) => { console.error(e); process.exit(1); });

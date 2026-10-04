@@ -52,30 +52,30 @@ smartlead inbox replies
 ### Campaigns
 
 ```
-GET  /campaigns/{id}                    — Fetch campaign by ID
-POST /campaigns/create                  — Create new campaign
-POST /campaigns/{id}/status             — Update status (START, PAUSED, STOP)
+GET  /campaigns/{id}                   , Fetch campaign by ID
+POST /campaigns/create                 , Create new campaign
+POST /campaigns/{id}/status            , Update status (START, PAUSED, STOP)
      Body: { "status": "START" }
 ```
 
 ### Campaign Email Accounts
 
 ```
-GET    /campaigns/{id}/email-accounts   — List accounts assigned to campaign
-POST   /campaigns/{id}/email-accounts   — Add accounts to campaign
+GET    /campaigns/{id}/email-accounts  , List accounts assigned to campaign
+POST   /campaigns/{id}/email-accounts  , Add accounts to campaign
        Body: { "email_account_ids": [1, 2, 3] }
-DELETE /campaigns/{id}/email-accounts   — Remove accounts from campaign
+DELETE /campaigns/{id}/email-accounts  , Remove accounts from campaign
 ```
 
 ### Campaign Sequences
 
 ```
-GET  /campaigns/{id}/sequences          — Fetch sequences
-POST /campaigns/{id}/sequences          — Save/update sequences
+GET  /campaigns/{id}/sequences         , Fetch sequences
+POST /campaigns/{id}/sequences         , Save/update sequences
      Body: { "sequences": [{ "seq_number": 1, "seq_delay_details": { "delay_in_days": 0 }, "subject": "...", "email_body": "..." }] }
 ```
 
-**A/B/C Variants** — use `seq_variants` array inside each sequence:
+**A/B/C Variants**, use `seq_variants` array inside each sequence:
 ```json
 {
   "sequences": [{
@@ -89,17 +89,17 @@ POST /campaigns/{id}/sequences          — Save/update sequences
   }]
 }
 ```
-Note: Do NOT include `distribution` field — SmartLead splits evenly automatically.
+Note: Do NOT include `distribution` field, SmartLead splits evenly automatically.
 
 **Email body order:** content → PS unsub line → `%signature%` (signature always last)
 
 ### Campaign Settings & Schedule
 
 ```
-POST /campaigns/{id}/settings           — Update settings
+POST /campaigns/{id}/settings          , Update settings
      Body: { "track_settings": [...], "stop_lead_settings": "..." }
 
-POST /campaigns/{id}/schedule           — Update schedule
+POST /campaigns/{id}/schedule          , Update schedule
      Body: { "timezone": "US/Eastern", "days_of_the_week": [1,2,3,4,5], "start_hour": "08:00", "end_hour": "17:00", "min_time_btw_emails": 8, "max_new_leads_per_day": 30 }
 ```
 
@@ -107,10 +107,10 @@ POST /campaigns/{id}/schedule           — Update schedule
 
 ```
 GET  /leads/?api_key={key}&email={email}
-     — Lookup lead by email address
+    , Lookup lead by email address
 
 POST /campaigns/{id}/leads
-     — Add leads to campaign (batch up to 100)
+    , Add leads to campaign (batch up to 100)
      Body: { "lead_list": [{ "email": "...", "first_name": "...", "last_name": "...", "company_name": "...", "custom_fields": { "field1": "value1" } }] }
 ```
 
@@ -119,27 +119,27 @@ POST /campaigns/{id}/leads
 ```
 GET /analytics/day-wise-overall-stats
     ?api_key={key}&start_date=YYYY-MM-DD&end_date=YYYY-MM-DD
-    — Day-by-day metrics (sent, opened, clicked, replied, bounced)
+   , Day-by-day metrics (sent, opened, clicked, replied, bounced)
 
 GET /analytics/day-wise-positive-reply-stats
     ?api_key={key}&start_date=YYYY-MM-DD&end_date=YYYY-MM-DD
-    — Day-by-day positive reply counts
+   , Day-by-day positive reply counts
 
 GET /analytics/overall-stats-v2
     ?api_key={key}&start_date=YYYY-MM-DD&end_date=YYYY-MM-DD
-    — Overall campaign metrics for date range
+   , Overall campaign metrics for date range
 
 GET /analytics/campaign/list
     ?api_key={key}
-    — List all campaigns with summary stats
+   , List all campaigns with summary stats
 
 GET /campaigns/{id}/analytics
     ?api_key={key}
-    — Analytics for specific campaign
+   , Analytics for specific campaign
 
 GET /campaigns/{id}/analytics-by-date
     ?api_key={key}&start_date=YYYY-MM-DD&end_date=YYYY-MM-DD
-    — Campaign analytics for specific date range (sent_count, reply_count)
+   , Campaign analytics for specific date range (sent_count, reply_count)
 ```
 
 ### Email Accounts (Global)
@@ -147,14 +147,14 @@ GET /campaigns/{id}/analytics-by-date
 ```
 GET  /email-accounts
      ?api_key={key}&offset=0&limit=100
-     — List all email accounts (paginated)
+    , List all email accounts (paginated)
 
 GET  /email-accounts/{id}
      ?api_key={key}
-     — Get specific email account
+    , Get specific email account
 
 POST /email-accounts/save
-     — Create/update email account (SMTP details, warmup, etc.)
+    , Create/update email account (SMTP details, warmup, etc.)
 ```
 
 ### Master Inbox
@@ -162,7 +162,7 @@ POST /email-accounts/save
 ```
 POST /master-inbox/inbox-replies
      Body: { "api_key": "...", "offset": 0, "limit": 50, "message_type": "RECEIVED" }
-     — Fetch inbox replies with filtering and pagination
+    , Fetch inbox replies with filtering and pagination
 ```
 
 ## Sub-Client / Custom API Key Pattern
@@ -190,7 +190,7 @@ const res = await fetch(`${SMARTLEAD_API}/campaigns/${campaignId}/leads?api_key=
 
 ## Performance tip: cache the email-accounts list
 
-If you hit `/email-accounts` more than a few times per script, paginate once at the start and keep the result in memory. Smartlead's pagination returns 100 per page — for accounts with thousands of inboxes, a full walk takes 30+ seconds.
+If you hit `/email-accounts` more than a few times per script, paginate once at the start and keep the result in memory. Smartlead's pagination returns 100 per page, for accounts with thousands of inboxes, a full walk takes 30+ seconds.
 
 For persistent caching across scripts, write the list to a local JSON file and refresh on a timer (e.g. every hour). The `/smartlead-inbox-manager` skill has scripts that implement this pattern.
 
@@ -198,7 +198,7 @@ For persistent caching across scripts, write the list to a local JSON file and r
 
 ## What to do next
 
-This is a reference skill — no direct next step. Used by all skills that interact with Smartlead (`/smartlead-inbox-manager`, `/smartlead-campaign-upload-public`, `/email-deliverability-audit`, `/positive-reply-scoring`, `/deliverability-incident-response`, etc.).
+This is a reference skill, no direct next step. Used by all skills that interact with Smartlead (`/smartlead-inbox-manager`, `/smartlead-campaign-upload-public`, `/email-deliverability-audit`, `/positive-reply-scoring`, `/deliverability-incident-response`, etc.).
 
 Return to the skill that sent you here.
 

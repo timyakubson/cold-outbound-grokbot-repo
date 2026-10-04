@@ -2,9 +2,9 @@
 /**
  * Second-pass website verifier. For each QUALIFIED domain in the scorer stream
  * files, fetches the homepage LIVE and classifies:
- *   dead            — no connection / HTTP error on both https and http
- *   suspended-parked — connects but shows a suspended/parked/for-sale/coming-soon page
- *   live            — real site → re-run the ICP prompt on the LIVE text:
+ *   dead           , no connection / HTTP error on both https and http
+ *   suspended-parked, connects but shows a suspended/parked/for-sale/coming-soon page
+ *   live           , real site → re-run the ICP prompt on the LIVE text:
  *                     final_verdict = verified | live-not-match
  * Appends to {run}/verified.stream.csv as it goes (resumable via state in the file itself).
  * Keeps polling the scorer streams until the scorers exit and everything is caught up.
@@ -17,13 +17,13 @@ import { execSync } from "child_process";
 import { loadEnv, parseArgs, readCsv, csvEscape, requireEnv, httpJson, outDir, BROWSER_UA, mapConcurrent, sleep, maybeHelp } from "./lib";
 
 maybeHelp(`
-verify-website.ts — second pass: fetch every QUALIFIED company's homepage LIVE and re-judge it.
+verify-website.ts, second pass: fetch every QUALIFIED company's homepage LIVE and re-judge it.
 
   npx tsx verify-website.ts --run=<slug> --prompt-file=<icp-prompt.txt> [--concurrency=40] [--once]
 
 Watches <run>/pull-batch*-scored.csv.stream.csv, appends to <run>/verified.stream.csv.
 Verdicts: verified | live-not-match | suspended-parked | dead.
-Requires OPENAI_API_KEY (or OPENAI_API_KEY_NANO). Always run this — stale DB
+Requires OPENAI_API_KEY (or OPENAI_API_KEY_NANO). Always run this, stale DB
 descriptions happily qualify companies whose websites are dead.
 `);
 
@@ -120,7 +120,7 @@ async function main() {
       let verified = 0, deadN = 0, parked = 0, notMed = 0;
       await mapConcurrent(todo, CONC, async (r) => {
         let live = await fetchLive(r.domain);
-        if (live.status === "dead") { await sleep(5000); live = await fetchLive(r.domain); } // transient DNS kills real companies — retry once
+        if (live.status === "dead") { await sleep(5000); live = await fetchLive(r.domain); } // transient DNS kills real companies, retry once
         let finalVerdict = "", liveReason = "";
         if (live.status === "live") {
           const v = await nanoVerdict(r.name, r.domain, live.text);
@@ -136,7 +136,7 @@ async function main() {
       console.log(`  batch done: ${verified} verified, ${notMed} live-not-match, ${parked} parked, ${deadN} dead`);
     } else {
       idle++;
-      if (idle >= 2 && !scorersAlive()) { console.log("scorers finished and caught up — exiting"); break; }
+      if (idle >= 2 && !scorersAlive()) { console.log("scorers finished and caught up, exiting"); break; }
       if (args.once) break;
       await sleep(30_000);
     }

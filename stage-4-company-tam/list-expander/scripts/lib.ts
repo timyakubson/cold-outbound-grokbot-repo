@@ -65,7 +65,7 @@ export function loadEnv(): void {
 export function requireEnv(name: string): string {
   const v = process.env[name];
   if (!v) {
-    console.error(`Missing env: ${name} — add it to the repo-root .env (see .env.example) or ~/.env`);
+    console.error(`Missing env: ${name}, add it to the repo-root .env (see .env.example) or ~/.env`);
     process.exit(1);
   }
   return v;
@@ -87,7 +87,7 @@ export function maybeHelp(text: string): void {
   }
 }
 
-// Cloudflare 403s default UAs on several vendors — always send a browser UA.
+// Cloudflare 403s default UAs on several vendors, always send a browser UA.
 export const BROWSER_UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36";
 
@@ -139,7 +139,7 @@ export function writeCsv(path: string, rows: Record<string, unknown>[], columns?
   if (!rows.length) { writeFileSync(path, ""); return; }
   const cols = columns ?? [...new Set(rows.flatMap((r) => Object.keys(r)))];
   mkdirSync(dirname(path), { recursive: true });
-  // write in chunks — one joined string tops out at V8's ~512MB string limit
+  // write in chunks, one joined string tops out at V8's ~512MB string limit
   // (RangeError: Invalid string length) on 500k+ row pulls
   writeFileSync(path, cols.join(",") + "\n");
   const CHUNK = 20_000;
@@ -185,7 +185,7 @@ export function normDomain(input: string): string {
 const PROSPEO_BASE = "https://api.prospeo.io";
 
 // Cross-process slot-reservation rate limiter (2026-07-05).
-// The Prospeo account limit (~150 req/min) is GLOBAL — two processes each
+// The Prospeo account limit (~150 req/min) is GLOBAL, two processes each
 // self-pacing at 450ms jointly trip it. All processes reserve send slots
 // through ~/.cache/prospeo-lock/: an mkdir lock (held ~1ms, never during HTTP)
 // guards slot.json {next_free_at, penalty_until}. A 429 anywhere writes a
@@ -198,7 +198,7 @@ const PROSPEO_MIN_INTERVAL = 450; // hard floor; env can only make it SLOWER
 function prospeoInterval(): number {
   const env = Number(process.env.PROSPEO_MIN_INTERVAL_MS ?? PROSPEO_MIN_INTERVAL);
   if (env < PROSPEO_MIN_INTERVAL) {
-    console.error(`⚠️ PROSPEO_MIN_INTERVAL_MS=${env} below the ${PROSPEO_MIN_INTERVAL}ms floor — clamping (account limit is global; see lib.ts)`);
+    console.error(`⚠️ PROSPEO_MIN_INTERVAL_MS=${env} below the ${PROSPEO_MIN_INTERVAL}ms floor, clamping (account limit is global; see lib.ts)`);
     return PROSPEO_MIN_INTERVAL;
   }
   return env;
@@ -211,7 +211,7 @@ async function withProspeoLock<T>(fn: () => T): Promise<T> {
       try {
         const age = Date.now() - statSync(PROSPEO_LOCK).mtimeMs;
         if (age > 5000) { try { rmdirSync(PROSPEO_LOCK); } catch { /* raced */ } }
-      } catch { /* lock vanished between EEXIST and stat — retry */ }
+      } catch { /* lock vanished between EEXIST and stat, retry */ }
       await sleep(15 + Math.random() * 35);
     }
   }
@@ -459,7 +459,7 @@ export async function fetchHomepageText(domain: string, maxChars = 4000): Promis
     ? `[JS-HEAVY SITE] TITLE: ${home.title}\nMETA: ${home.metaDesc}\nOG: ${home.ogDesc}\nBODY: ${home.body}`
     : `TITLE: ${home.title}\nMETA: ${home.metaDesc}\nBODY: ${home.body}`;
 
-  // Thin homepage — pull an about/company page for real body text.
+  // Thin homepage, pull an about/company page for real body text.
   if (home.body.length < 400) {
     for (const path of ["/about", "/about-us", "/company"]) {
       const sub = await grabWithProto(domain, path);

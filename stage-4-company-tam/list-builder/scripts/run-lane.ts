@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * run-lane.ts — the one-command lane orchestrator (WS1, 2026-07-05).
+ * run-lane.ts, the one-command lane orchestrator (WS1, 2026-07-05).
  *
  * A future operator (Opus) runs EXACTLY:
  *     npx tsx run-lane.ts --config=<lane.json>
@@ -108,7 +108,7 @@ if (state.config_sha !== configSha) {
   for (const s of ["SCORE", "REJECT_AUDIT", "VERIFY", "ENRICH", "FINALIZE", "COUNT", "PUSH", "REPORT"] as Stage[]) state.stages[s] = { status: "pending" };
   state.config_sha = configSha;
   saveState();
-  console.log("config change accepted — SCORE onward invalidated");
+  console.log("config change accepted, SCORE onward invalidated");
 }
 
 // ---------- run lock ----------
@@ -125,11 +125,11 @@ function acquireRunLock(): void {
       let alive = false;
       if (oldPid) { try { process.kill(oldPid, 0); alive = true; } catch { alive = false; } }
       if (alive && !args["steal-lock"]) die(`lane ${laneId} already running (pid ${oldPid}). If you are SURE it is dead: --steal-lock`);
-      try { rmSync(lockDir, { recursive: true, force: true }); } catch { /* raced with release — retry */ }
+      try { rmSync(lockDir, { recursive: true, force: true }); } catch { /* raced with release, retry */ }
       execSync("sleep 0.3");
     }
   }
-  die(`could not acquire run lock after 10 attempts (${lockDir}) — remove it manually if no run-lane is alive`);
+  die(`could not acquire run lock after 10 attempts (${lockDir}), remove it manually if no run-lane is alive`);
 }
 function releaseRunLock(): void { try { rmSync(lockDir, { recursive: true, force: true }); } catch { /* ok */ } }
 
@@ -148,7 +148,7 @@ function runChild(cmd: string, cmdArgs: string[], watchArtifact: string, stallMi
       try { const m = statSync(watchArtifact).mtimeMs; if (m > lastProgress) lastProgress = m; } catch { /* not yet created */ }
       try { const m = statSync(logPath).mtimeMs; if (m > lastProgress) lastProgress = m; } catch { /* ok */ }
       if (Date.now() - lastProgress > stallMin * 60_000) {
-        console.error(`  watchdog: no progress on ${basename(watchArtifact)} for ${stallMin}min — killing process group ${child.pid}`);
+        console.error(`  watchdog: no progress on ${basename(watchArtifact)} for ${stallMin}min, killing process group ${child.pid}`);
         try { process.kill(-child.pid!, "SIGTERM"); } catch { /* gone */ }
         setTimeout(() => { try { process.kill(-child.pid!, "SIGKILL"); } catch { /* gone */ } }, 10_000);
       }
@@ -164,7 +164,7 @@ async function runStage(stage: Stage, fn: () => Promise<{ out_rows?: number; not
   if (s.status === "done") { console.log(`✓ ${stage} (done: ${s.out_rows ?? "-"} rows)`); return true; }
   if (s.status === "skipped") { console.log(`- ${stage} (skipped: ${s.note})`); return true; }
   if (st("PULL").status === "blocked" && !["PRECHECK", "LOOKALIKES", "PULL", "REPORT"].includes(stage)) {
-    s.status = "blocked"; s.note = "PULL failed — no plausible half-lists"; saveState();
+    s.status = "blocked"; s.note = "PULL failed, no plausible half-lists"; saveState();
     console.log(`■ ${stage} blocked (PULL failed)`); return false;
   }
   console.log(`▶ ${stage} ...`);
@@ -174,12 +174,12 @@ async function runStage(stage: Stage, fn: () => Promise<{ out_rows?: number; not
       const r = await fn();
       Object.assign(s, { status: "done", finished: nowIso(), out_rows: r.out_rows, note: r.note });
       saveState();
-      console.log(`✓ ${stage} — ${r.note ?? `${r.out_rows ?? "?"} rows`}`);
+      console.log(`✓ ${stage}, ${r.note ?? `${r.out_rows ?? "?"} rows`}`);
       return true;
     } catch (e: any) {
       const msg = String(e?.message ?? e);
       const retryable = RETRYABLE.test(msg);
-      console.error(`✗ ${stage} attempt ${attempt + 1}: ${msg.slice(0, 300)}${retryable && attempt === 0 ? " — retrying once" : ""}`);
+      console.error(`✗ ${stage} attempt ${attempt + 1}: ${msg.slice(0, 300)}${retryable && attempt === 0 ? ", retrying once" : ""}`);
       if (!retryable || attempt === 1) {
         Object.assign(s, { status: stage === "PULL" ? "blocked" : "failed", finished: nowIso(), error: msg.slice(0, 500) });
         saveState();
@@ -216,7 +216,7 @@ async function stPrecheck() {
   const ping = await prospeoSearch("search-company", { company_keywords: { include: ["test-precheck-zzz"] } });
   if (ping.error && ping.error_code !== "NO_RESULTS") throw new Error(`Prospeo unreachable/errored: ${ping.error_code}`);
 
-  // CONFIG VALIDATION — fail here with the exact offending field, not later at PULL.
+  // CONFIG VALIDATION, fail here with the exact offending field, not later at PULL.
   const base: any = { company_location_search: { include: cfg.states?.length ? cfg.states.map((s: string) => `${s}, United States`) : ["United States #US"] } };
   const noBand = cfg.emp_min <= 1 && cfg.emp_max >= 100000;
   // emp band: Prospeo rejects company_headcount_custom.max > 100000 as INVALID_FILTERS.
@@ -230,11 +230,11 @@ async function stPrecheck() {
       throw new Error(`config: emp band {min:${cfg.emp_min},max:${cfg.emp_max}} rejected by Prospeo [${bandProbe.error_code}]: ${bandProbe.filter_error ?? ""}`);
     }
   }
-  // probe ALL industries in ONE call — a 400 names the bad value in filter_error.
+  // probe ALL industries in ONE call, a 400 names the bad value in filter_error.
   if (cfg.industries?.length) {
     const indProbe = await prospeoSearch("search-company", { company_industry: { include: cfg.industries }, ...base });
     if (indProbe.error && indProbe.error_code !== "NO_RESULTS") {
-      throw new Error(`config: invalid industry in [${cfg.industries.join(", ")}] — Prospeo [${indProbe.error_code}]: ${indProbe.filter_error ?? "(check names against /prospeo-search-api; see LEGACY_INDUSTRY_MAP in list-expander lib.ts for legacy→modern)"}`);
+      throw new Error(`config: invalid industry in [${cfg.industries.join(", ")}], Prospeo [${indProbe.error_code}]: ${indProbe.filter_error ?? "(check names against /prospeo-search-api; see LEGACY_INDUSTRY_MAP in list-expander lib.ts for legacy→modern)"}`);
     }
   }
   return { note: `env+prompt+Prospeo ok; config validated (band${noBand ? "=no-band" : " ok"}, ${cfg.industries?.length ?? 0} industries ok)` };
@@ -261,7 +261,7 @@ async function stPull() {
   const empFilter = noBand ? {} : { company_headcount_custom: { min: cfg.emp_min, max: cfg.emp_max } };
   for (const ind of cfg.industries ?? []) sets.push({ label: `ind-${ind.slice(0, 18).replace(/\W+/g, "-").toLowerCase()}`, filters: { company_industry: { include: [ind] }, ...empFilter } });
   for (const kw of cfg.keywords ?? []) sets.push({ label: `kw-${kw.slice(0, 18).replace(/\W+/g, "-").toLowerCase()}`, filters: { company_keywords: { include: [kw] }, ...empFilter } });
-  if (!sets.length) throw new Error("lane.json has neither industries nor keywords — nothing to pull");
+  if (!sets.length) throw new Error("lane.json has neither industries nor keywords, nothing to pull");
   const base: any = { company_location_search: { include: cfg.states?.length ? cfg.states.map((s: string) => `${s}, United States`) : ["United States #US"] } };
   atomicWrite(join(runDir, "winners.json"), JSON.stringify({ filter_sets: sets, base_filters: base }, null, 1));
   // pull.ts reads winners.json from its own outDir; point it at OUR runDir via a scoped run name
@@ -274,7 +274,7 @@ async function stPull() {
   if (!existsSync(out) || code !== 0) throw new Error(`pull exited ${code}; see ${join(runDir, "child.log")}`);
   writeFileSync(A.pullAll, readFileSync(out));
   const n = fileRows(A.pullAll);
-  if (n < 1) throw new Error("pull produced 0 rows — check winners.json filters (bad industry/keyword names 400 or return nothing)");
+  if (n < 1) throw new Error("pull produced 0 rows, check winners.json filters (bad industry/keyword names 400 or return nothing)");
   return { out_rows: n };
 }
 
@@ -308,7 +308,7 @@ async function stMerge() {
   }
   // seeds always enter the pool (the "67 missing seeds" guardrail)
   for (const s of (cfg.seeds ?? []).map(normDomain)) if (s && !cand.has(s)) cand.set(s, { domain: s, name: s, source_filters: "seed", text_excerpt: "" } as any);
-  // registry dedup — VISIBLE counts, never silent
+  // registry dedup, VISIBLE counts, never silent
   const reg = registryFetch(cfg.client_slug, cfg.name);
   const skipped: Record<string, string>[] = [];
   for (const d of [...cand.keys()]) if (reg.domains.has(d)) { skipped.push(cand.get(d)!); cand.delete(d); }
@@ -319,7 +319,7 @@ async function stMerge() {
 
 async function stScore() {
   const inputSha = fileSha(A.candidates);
-  if (st("SCORE").input_sha && st("SCORE").input_sha !== inputSha) console.log("  input changed — rescoring");
+  if (st("SCORE").input_sha && st("SCORE").input_sha !== inputSha) console.log("  input changed, rescoring");
   st("SCORE").input_sha = inputSha; saveState();
   const code = await runChild("npx", ["tsx", join(LX, "score-batch.ts"), `--csv=${A.candidates}`, `--prompt-file=${cfg.prompt}`, "--scrape", "--concurrency=200", `--out=${A.scored}`, "--resume"], A.scoredStream, STALL_MIN);
   if (code !== 0 && fileRows(A.scoredStream) < fileRows(A.candidates) * 0.98) throw new Error(`score exited ${code} before completing (${fileRows(A.scoredStream)}/${fileRows(A.candidates)})`);
@@ -427,7 +427,7 @@ function readiness(): { ready: boolean; reasons: string[] } {
   const t = cfg.thresholds ?? {};
   if (finalRows < (t.min_final_rows ?? 10)) reasons.push(`final rows ${finalRows} < min_final_rows ${t.min_final_rows ?? 10}`);
   const scored = fileRows(A.scoredStream); const q = st("SCORE").out_rows ?? 0;
-  if (scored > 0 && 1 - q / scored > (t.max_reject_rate ?? 0.998)) reasons.push(`reject rate ${(1 - q / scored).toFixed(3)} above max — judge or filters likely broken`);
+  if (scored > 0 && 1 - q / scored > (t.max_reject_rate ?? 0.998)) reasons.push(`reject rate ${(1 - q / scored).toFixed(3)} above max, judge or filters likely broken`);
   const ver = st("VERIFY").out_rows ?? 0;
   if (q > 0 && ver / q < (t.min_verified_pct ?? 0.2)) reasons.push(`verified ${ver}/${q} below min_verified_pct`);
   return { ready: reasons.length === 0, reasons };
@@ -447,7 +447,7 @@ async function stReport() {
   saveMetrics(runDir, { lane: laneId });
   const r = readiness();
   const lines: string[] = [];
-  lines.push(r.ready ? `# READY — ${laneId}` : `# NOT READY — ${laneId}`);
+  lines.push(r.ready ? `# READY, ${laneId}` : `# NOT READY, ${laneId}`);
   if (!r.ready) {
     lines.push("", "## Why not ready");
     for (const reason of r.reasons) lines.push(`- ${reason}`);
@@ -456,7 +456,7 @@ async function stReport() {
   lines.push("", "## Stages");
   for (const s of STAGES) {
     const x = st(s);
-    lines.push(`- ${s}: ${x.status}${x.out_rows != null ? ` (${x.out_rows})` : ""}${x.note ? ` — ${x.note}` : ""}${x.error ? ` — ERROR: ${x.error.slice(0, 160)}` : ""}`);
+    lines.push(`- ${s}: ${x.status}${x.out_rows != null ? ` (${x.out_rows})` : ""}${x.note ? `, ${x.note}` : ""}${x.error ? `, ERROR: ${x.error.slice(0, 160)}` : ""}`);
   }
   const m = existsSync(join(runDir, "run-metrics.json")) ? JSON.parse(readFileSync(join(runDir, "run-metrics.json"), "utf8")) : {};
   lines.push("", "## Cost/telemetry", `- Prospeo requests: ${m.prospeo_requests ?? 0} (rate-limit hits: ${m.prospeo_rate_limits ?? 0})`, `- Nano calls: ${m.nano_calls ?? 0}`, `- Homepage fetches: ${m.homepage_fetches ?? 0}`);
@@ -476,10 +476,10 @@ async function stReport() {
       await runStage("LOOKALIKES", stLookalikes);
       await runStage("PULL", stPull);
     } else {
-      // A failed PRECHECK is a config/env error — block PULL now (fail-fast) rather
+      // A failed PRECHECK is a config/env error, block PULL now (fail-fast) rather
       // than wasting a full pull on a filter Prospeo will reject anyway.
       const p = st("PULL");
-      if (p.status !== "done") { p.status = "blocked"; p.note = `PRECHECK ${st("PRECHECK").status} — fix lane.json/env, then re-run`; saveState(); console.log("■ PULL blocked (PRECHECK failed)"); }
+      if (p.status !== "done") { p.status = "blocked"; p.note = `PRECHECK ${st("PRECHECK").status}, fix lane.json/env, then re-run`; saveState(); console.log("■ PULL blocked (PRECHECK failed)"); }
     }
     await runStage("MERGE", stMerge);
     await runStage("SCORE", stScore);
@@ -490,7 +490,7 @@ async function stReport() {
     await runStage("COUNT", stCount);
     await runStage("PUSH", stPush);
   } finally {
-    // REPORT always re-runs — a "done" from a previous (possibly failed) run must
+    // REPORT always re-runs, a "done" from a previous (possibly failed) run must
     // never leave a stale summary.md describing the wrong run.
     state.stages["REPORT"] = { status: "pending" }; saveState();
     await runStage("REPORT", stReport).catch((e) => console.error("REPORT failed:", e));

@@ -27,7 +27,7 @@ Before running anything, you need two API keys stored as environment variables.
 Add these to a `.env` file in your project root (or export them in your shell):
 
 ```bash
-# .env — NEVER commit this file
+# .env, NEVER commit this file
 DYNADOT_API_KEY=your_dynadot_key_here
 ZAPMAIL_API_KEY=your_zapmail_key_here
 ```
@@ -45,13 +45,13 @@ ZAPMAIL_API_KEY = os.environ["ZAPMAIL_API_KEY"]
 ### 4. Verify Access
 Test both APIs before doing anything:
 
-**Dynadot — check wallet balance:**
+**Dynadot, check wallet balance:**
 ```
 GET https://api.dynadot.com/api3.json?key=<YOUR_KEY>&command=account_info
 ```
 Response includes `AccountBalance` (e.g., `"$106.20"`).
 
-**Zapmail — list domains:**
+**Zapmail, list domains:**
 ```
 GET https://api.zapmail.ai/api/v2/domains/assignable?limit=10&page=1
 Header: x-auth-zapmail: <YOUR_KEY>
@@ -87,21 +87,21 @@ The goal is **short, clean domains** that look like real brands. Shorter = bette
 
 Use a **brand keyword** (your company name or a variation) combined with short prefixes/suffixes:
 
-**Tier 1 — Prefix + Brand** (shortest, try these first):
+**Tier 1, Prefix + Brand** (shortest, try these first):
 ```
 go{brand}.com       try{brand}.com      get{brand}.com
 my{brand}.com       the{brand}.com      hey{brand}.com
 use{brand}.com      run{brand}.com      one{brand}.com
 ```
 
-**Tier 2 — Brand + Suffix** (still short):
+**Tier 2, Brand + Suffix** (still short):
 ```
 {brand}hq.com       {brand}hub.com      {brand}now.com
 {brand}app.com      {brand}pro.com      {brand}lab.com
 {brand}ai.com       {brand}co.com       {brand}go.com
 ```
 
-**Tier 3 — Prefix + Brand + Suffix** (use only if tiers 1-2 don't yield enough):
+**Tier 3, Prefix + Brand + Suffix** (use only if tiers 1-2 don't yield enough):
 ```
 go{brand}hq.com     try{brand}hub.com   get{brand}pro.com
 ```
@@ -123,15 +123,15 @@ grid, point, shift, field, net, way, pulse, vault, peak, sync, lab
 ```
 
 ### Filtering Rules
-- **Max SLD length:** 40 characters (shorter is always better — aim for under 20)
+- **Max SLD length:** 40 characters (shorter is always better, aim for under 20)
 - **Banned substrings:** mega, ultra, grp (look spammy)
 - **Awkward substring check:** Screen for unintended words (e.g., "therapist" = "the+rapist", profanity, slurs). Run each candidate through a blocklist.
 - **Deduplicate globally:** Never use the same domain for two different senders/clients
 
 ### Recommended TLD
-- `.com` — primary choice (~$10-14 on Dynadot). Best inbox trust, cleanest pattern-match for recipients.
-- `.co` — secondary (~$8-30 depending on name). Looks professional, often available when .com is taken.
-- Avoid `.info`, `.xyz`, `.click`, `.top`, `.buzz`, `.loan` — these hurt deliverability with recipients who pattern-match on TLD.
+- `.com`, primary choice (~$10-14 on Dynadot). Best inbox trust, cleanest pattern-match for recipients.
+- `.co`, secondary (~$8-30 depending on name). Looks professional, often available when .com is taken.
+- Avoid `.info`, `.xyz`, `.click`, `.top`, `.buzz`, `.loan`, these hurt deliverability with recipients who pattern-match on TLD.
 
 ### Example: Generating for brand "acme"
 ```
@@ -358,7 +358,7 @@ Body: {
 `SMARTLEAD`, `INSTANTLY`, `REACHINBOX`, `REPLY_IO`, `QUICKMAIL`, `EMELIA`, `FIRSTQUADRANT`, `WARMY`, `SUPERAGI`, `LEMLIST`, `PIPL`, `LUELLA`, `MASTER_INBOX`, `SAILE`, `SNOV`, `EMAILBISON`
 
 ### Important
-- **Always filter by `status: "ACTIVE"`** — exporting "In Progress" inboxes fails silently
+- **Always filter by `status: "ACTIVE"`**, exporting "In Progress" inboxes fails silently
 - Use `contains` to filter by sender name if you have multiple senders
 - Your sending platform account must be linked first via Zapmail's dashboard or API:
   ```
@@ -413,19 +413,19 @@ export_to_platform(contains="sarah", app="SMARTLEAD")
 
 ## Common Gotchas
 
-1. **Dynadot comma encoding** — `urllib.parse.urlencode()` encodes commas as `%2C`, breaking batch NS requests. Always use `safe=','`.
+1. **Dynadot comma encoding**, `urllib.parse.urlencode()` encodes commas as `%2C`, breaking batch NS requests. Always use `safe=','`.
 
-2. **Batch inbox failures** — If even 1 mailbox in a Zapmail batch already exists, the entire batch returns 400. Retry failed domains individually.
+2. **Batch inbox failures**, If even 1 mailbox in a Zapmail batch already exists, the entire batch returns 400. Retry failed domains individually.
 
-3. **Export requires ACTIVE status** — Exporting "In Progress" mailboxes fails silently. Always wait the full 4-6 hours or poll for ACTIVE status.
+3. **Export requires ACTIVE status**, Exporting "In Progress" mailboxes fails silently. Always wait the full 4-6 hours or poll for ACTIVE status.
 
-4. **DNS propagation varies** — Most domains propagate in 15 min, but some take 30+. Poll the assignable endpoint rather than using a fixed sleep.
+4. **DNS propagation varies**, Most domains propagate in 15 min, but some take 30+. Poll the assignable endpoint rather than using a fixed sleep.
 
-5. **Dynadot IP whitelist** — API calls will fail if your IP isn't whitelisted in Dynadot's API settings.
+5. **Dynadot IP whitelist**, API calls will fail if your IP isn't whitelisted in Dynadot's API settings.
 
-6. **Zapmail rate limits** — Add pauses between batches (3s for Zapmail, 1s for Dynadot search, 0.5s for Dynadot register). Going too fast gets you temporarily blocked.
+6. **Zapmail rate limits**, Add pauses between batches (3s for Zapmail, 1s for Dynadot search, 0.5s for Dynadot register). Going too fast gets you temporarily blocked.
 
-7. **Domain length matters** — Shorter domains = better deliverability. Prioritize tier 1 (prefix+brand) over tier 3 (prefix+brand+suffix).
+7. **Domain length matters**, Shorter domains = better deliverability. Prioritize tier 1 (prefix+brand) over tier 3 (prefix+brand+suffix).
 
 ---
 
@@ -449,12 +449,12 @@ export_to_platform(contains="sarah", app="SMARTLEAD")
 
 **Run `/smartlead-inbox-manager`** to configure warmup + signatures + tags on your newly-created inboxes.
 
-**Then WAIT 2 WEEKS for warmup before sending real emails.** This is the single most important rule — do not skip. Under-warmed inboxes land in spam, damaging your domain reputation permanently.
+**Then WAIT 2 WEEKS for warmup before sending real emails.** This is the single most important rule, do not skip. Under-warmed inboxes land in spam, damaging your domain reputation permanently.
 
 **During the 2-week wait:** build your list (`/prospeo-full-export`, `/disco-like`, etc.), write copy (`/campaign-copywriting`). You'll be ready to launch the moment warmup finishes.
 
 ## Related skills
 
-- `/smartlead-inbox-manager` — configure the inboxes you just provisioned
-- `/email-deliverability-audit` — check auth records (SPF/DKIM/DMARC) after setup
-- `/cold-email-kickoff` — the orchestrator that usually invokes this skill
+- `/smartlead-inbox-manager`, configure the inboxes you just provisioned
+- `/email-deliverability-audit`, check auth records (SPF/DKIM/DMARC) after setup
+- `/cold-email-kickoff`, the orchestrator that usually invokes this skill

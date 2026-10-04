@@ -3,7 +3,7 @@
  * Aggregate classified replies into positive reply rate metrics.
  *
  * Input: JSON array of { lead_id, label, confidence?, reason? } from Claude classification.
- * Needs total_sent count — fetched via Smartlead campaign stats API.
+ * Needs total_sent count, fetched via Smartlead campaign stats API.
  *
  * Usage:
  *   export SMARTLEAD_API_KEY=xxx
@@ -98,7 +98,7 @@ async function main() {
   };
 
   // Human-readable output
-  console.log(`\nCampaign ${campaignId} — Positive Reply Scoring\n`);
+  console.log(`\nCampaign ${campaignId}, Positive Reply Scoring\n`);
   console.log(`Total sent:              ${sent.toLocaleString()}`);
   console.log(`Total replies:           ${totalReplies.toLocaleString()} (${pct(totalReplies, sent)})`);
   console.log(`  ooo/bounce (excluded):    ${excluded}`);

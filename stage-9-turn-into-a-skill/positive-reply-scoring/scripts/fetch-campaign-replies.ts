@@ -177,7 +177,7 @@ async function main() {
   }
 
   writeFileSync(out, JSON.stringify(replies, null, 2));
-  console.error(`\nWrote ${out} — ${replies.length} replies`);
+  console.error(`\nWrote ${out}, ${replies.length} replies`);
 }
 
 main().catch((e) => {

@@ -1,10 +1,10 @@
 #!/usr/bin/env tsx
 /**
- * Phase 1/3 — Seed fingerprinting.
+ * Phase 1/3, Seed fingerprinting.
  * For each input domain, record how it shows up in Prospeo (industry, keywords,
  * description, headcount) plus its live homepage text. Output: fingerprint.json
  * + fingerprint.csv + a terminal summary table of the industries/keywords the
- * set actually carries — that table is what Phase 3 mines filters from.
+ * set actually carries, that table is what Phase 3 mines filters from.
  *
  * Seeds missing from Prospeo are printed explicitly: that gap IS the
  * under-count story to show the client.
@@ -21,7 +21,7 @@ import {
 } from "./lib";
 
 maybeHelp(`
-fingerprint.ts — Phase 1: how the databases see your seed companies.
+fingerprint.ts, Phase 1: how the databases see your seed companies.
 
   npx tsx fingerprint.ts --domains="a.com,b.com" --run=<slug>
   npx tsx fingerprint.ts --csv=seeds.csv --run=<slug>     (csv needs a \`domain\` column)

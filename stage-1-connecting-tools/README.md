@@ -1,10 +1,10 @@
-# Stage 1 — Connecting tools
+# Stage 1, Connecting tools
 
 Not a skill, a pre-flight checklist. This is video Steps 1-4 compressed into
 one repo stage, since none of them produce a skill file of their own, they
 just get you ready to start Stage 2.
 
-## Step 1 — Connect your tools
+## Step 1, Connect your tools
 
 Plug Taskmaster into:
 
@@ -18,7 +18,7 @@ Plug Taskmaster into:
 Use Grok Bot's plugins panel + secure gateway for anything needing an API
 key, never paste a key directly into a chat message.
 
-## Step 2 — Create Taskmaster
+## Step 2, Create Taskmaster
 
 Create your first bot. Name it **Taskmaster**. Use this as its
 description/prompt:
@@ -31,7 +31,7 @@ description/prompt:
 This is the only bot you create manually, everything after Stage 1 gets
 built by Taskmaster itself (see below).
 
-## Step 3 — Grab the repo
+## Step 3, Grab the repo
 
 Fork [`cold-outbound-grokbot-repo`](https://github.com/timyakubson/cold-outbound-grokbot-repo)
 into your own GitHub account, then connect Taskmaster to your fork via the
@@ -46,7 +46,7 @@ Once connected, message Taskmaster:
 
 Taskmaster reads Stages 2-9 below and builds the rest of the team itself.
 
-## Step 4 — Download the mobile app
+## Step 4, Download the mobile app
 
 Get Grok Bot on your phone too, for Telegram-style check-ins once the team's
 running, no need to be at your desk to see what's happening.

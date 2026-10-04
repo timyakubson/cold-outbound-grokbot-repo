@@ -8,7 +8,7 @@
  *   <sender_company_name>
  *   <sender_physical_address>
  *
- * Keeping a real mailing address in the signature is recommended — it's standard practice and covers CAN-SPAM-style rules.
+ * Keeping a real mailing address in the signature is recommended, it's standard practice and covers CAN-SPAM-style rules.
  *
  * Sender identity comes from .env:
  *   SENDER_FIRST_NAME
@@ -32,12 +32,12 @@
  *   npx tsx scripts/set-signatures.ts --all --template-file=./my-signature.txt
  *
  * Supported placeholders in custom templates:
- *   {from_name}   — inbox's `from_name`, or SENDER_FIRST_NAME + SENDER_LAST_NAME fallback
- *   {from_email}  — the inbox's sending address
- *   {domain}      — domain part of the email
- *   {title}       — SENDER_TITLE
- *   {company}     — SENDER_COMPANY_NAME
- *   {address}     — SENDER_PHYSICAL_ADDRESS
+ *   {from_name}  , inbox's `from_name`, or SENDER_FIRST_NAME + SENDER_LAST_NAME fallback
+ *   {from_email} , the inbox's sending address
+ *   {domain}     , domain part of the email
+ *   {title}      , SENDER_TITLE
+ *   {company}    , SENDER_COMPANY_NAME
+ *   {address}    , SENDER_PHYSICAL_ADDRESS
  */
 
 import { readFileSync } from "fs";
@@ -50,7 +50,7 @@ function envOrThrow(key: string, fallback?: string): string {
   if (v && v.trim()) return v.trim();
   if (fallback !== undefined) return fallback;
   throw new Error(
-    `Missing env: ${key}. Set it in .env — required for the default signature template.`
+    `Missing env: ${key}. Set it in .env, required for the default signature template.`
   );
 }
 

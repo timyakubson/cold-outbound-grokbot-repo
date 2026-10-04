@@ -22,7 +22,7 @@ if (!PROSPEO_KEY) {
   process.exit(1);
 }
 if (!MV_KEY) {
-  console.error("Warning: MILLIONVERIFIER_API_KEY not set — skipping validation");
+  console.error("Warning: MILLIONVERIFIER_API_KEY not set, skipping validation");
 }
 
 function parseArgs() {
@@ -120,7 +120,7 @@ async function main() {
     enrichHits = 0,
     enrichMisses = 0;
 
-  // 1. Email waterfall — only enrich leads without email
+  // 1. Email waterfall, only enrich leads without email
   console.error(`[Enrich] Running email waterfall on ${leads.length} leads...`);
   const needEmail = leads.filter((l) => !l.email || !l.email.includes("@"));
   alreadyHad = leads.length - needEmail.length;
@@ -192,7 +192,7 @@ async function main() {
       2
     )
   );
-  console.error(`\nWrote ${out} — ${finalWithEmail.length} leads with valid email`);
+  console.error(`\nWrote ${out}, ${finalWithEmail.length} leads with valid email`);
 }
 
 main().catch((e) => {

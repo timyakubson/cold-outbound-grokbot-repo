@@ -68,11 +68,11 @@ function check(domain: string, dkimSelector: string): AuthRow {
     dmarc.match(/p=(\w+)/)?.[1] ?? (dmarc_present ? "unknown" : "");
 
   const notes: string[] = [];
-  if (!spf_present) notes.push("SPF missing — add `v=spf1 include:<provider> ~all`");
-  else if (!spf_strict) notes.push("SPF loose (~all or +all) — consider -all once confirmed");
+  if (!spf_present) notes.push("SPF missing, add `v=spf1 include:<provider> ~all`");
+  else if (!spf_strict) notes.push("SPF loose (~all or +all), consider -all once confirmed");
   if (!dkim_present) notes.push(`DKIM missing at ${dkimSelector}._domainkey`);
-  if (!dmarc_present) notes.push("DMARC missing — add `v=DMARC1; p=none; rua=mailto:...`");
-  else if (dmarc_policy === "none") notes.push("DMARC policy=none — no enforcement yet");
+  if (!dmarc_present) notes.push("DMARC missing, add `v=DMARC1; p=none; rua=mailto:...`");
+  else if (dmarc_policy === "none") notes.push("DMARC policy=none, no enforcement yet");
 
   return {
     domain,

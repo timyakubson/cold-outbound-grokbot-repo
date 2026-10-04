@@ -1,6 +1,6 @@
 # Prospeo Industry Taxonomy
 
-Prospeo requires exact-match industry names. "Manufacturing" is NOT valid. "General Manufacturing" is. This file is the source of truth — pick industries from this list when writing `icp_hard_filters.industries_in` and `industries_out` in `client-profile.yaml`.
+Prospeo requires exact-match industry names. "Manufacturing" is NOT valid. "General Manufacturing" is. This file is the source of truth, pick industries from this list when writing `icp_hard_filters.industries_in` and `industries_out` in `client-profile.yaml`.
 
 Source: https://prospeo.io/api-docs/enum/industries
 

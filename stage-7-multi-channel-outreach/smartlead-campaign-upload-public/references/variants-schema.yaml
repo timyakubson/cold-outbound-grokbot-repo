@@ -1,7 +1,7 @@
-# variants.yaml schema — structure only, no example content.
+# variants.yaml schema, structure only, no example content.
 # /campaign-copywriting fills this in with actual copy. Do not ship subject/body content in this schema file.
 
-name: "REQUIRED — campaign name shown in Smartlead UI"
+name: "REQUIRED, campaign name shown in Smartlead UI"
 
 schedule:
   timezone: America/New_York       # any IANA timezone

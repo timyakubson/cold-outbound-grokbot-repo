@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * REJECT_AUDIT stage — automated false-negative detector (WS4).
+ * REJECT_AUDIT stage, automated false-negative detector (WS4).
  *
  * The production pattern (2026-07-03): the strict lane judge rejects real fits
  * for thin evidence; a lenient re-judge rescued 76 Medicare + 127 RE companies.
@@ -15,7 +15,7 @@
  *    append newly-qualified rows to the scored stream (verify picks them up).
  *
  * Artifacts: reject-audit.csv (sample + verdicts + rescued flag), exit 0 always
- * unless hard error — the audit INFORMS, run-lane records counts.
+ * unless hard error, the audit INFORMS, run-lane records counts.
  */
 import { readFileSync, appendFileSync, existsSync } from "fs";
 import { join } from "path";
@@ -82,7 +82,7 @@ async function judge(row: Record<string, string>, lenient: boolean): Promise<{ q
 }
 
 async function main() {
-  if (!existsSync(streamPath)) { console.log("no scored stream — nothing to audit"); writeCsv(outPath, []); return; }
+  if (!existsSync(streamPath)) { console.log("no scored stream, nothing to audit"); writeCsv(outPath, []); return; }
   const scored = readCsv(streamPath);
   // candidates text lives in candidates.csv (stream cols don't carry text)
   const candText = new Map(existsSync(candCsv) ? readCsv(candCsv).map((r) => [r.domain, r.text_excerpt || r.description || ""]) : []);
@@ -92,7 +92,7 @@ async function main() {
     const text = (candText.get(r.domain) || r.reason || "").toLowerCase();
     return terms.some((t) => text.includes(t));
   }).map((r): Record<string, string> => ({ ...r, text_excerpt: candText.get(r.domain) || "" }));
-  if (!flagged.length) { console.log("0 flagged rejects — audit clean"); writeCsv(outPath, []); return; }
+  if (!flagged.length) { console.log("0 flagged rejects, audit clean"); writeCsv(outPath, []); return; }
 
   // deterministic sample: sort by sha of domain, take first N
   const sample = [...flagged].sort((a, b) => sha(a.domain).localeCompare(sha(b.domain))).slice(0, SAMPLE);
@@ -107,7 +107,7 @@ async function main() {
   console.log(`disagreement rate: ${(rate * 100).toFixed(1)}% (${disagree}/${sample.length})`);
 
   if (rate > THRESHOLD) {
-    console.log(`> threshold — rescuing ALL ${flagged.length} flagged rejects with lenient judge`);
+    console.log(`> threshold, rescuing ALL ${flagged.length} flagged rejects with lenient judge`);
     const rescued = await mapConcurrent(flagged, 60, async (row) => {
       const v = await judge(row, true);
       return { row, v };

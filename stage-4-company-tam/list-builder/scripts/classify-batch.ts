@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * Multi-class segment classifier — one nano pass assigns each company to ONE
+ * Multi-class segment classifier, one nano pass assigns each company to ONE
  * segment (or none), instead of N binary judges. Prompt file must describe the
  * segments and output labels.
  *
@@ -66,7 +66,7 @@ async function main() {
     const r = await classify(row);
     appendFileSync(streamPath, STREAM_COLS.map((c) => csvEscape((r as any)[c])).join(",") + "\n");
     tally[String(r.segment)] = (tally[String(r.segment)] ?? 0) + 1;
-    if (++n % 500 === 0) console.log(`  ${n}/${todo.length} — ${JSON.stringify(tally)}`);
+    if (++n % 500 === 0) console.log(`  ${n}/${todo.length}, ${JSON.stringify(tally)}`);
     return r;
   });
   writeCsv(out, results as any);

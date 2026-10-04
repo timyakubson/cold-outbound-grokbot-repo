@@ -1,4 +1,4 @@
-# leads.csv — required columns and allowed custom fields
+# leads.csv, required columns and allowed custom fields
 
 The upload script accepts a CSV with these columns. Extra columns are rejected to prevent accidental PII upload or schema drift.
 
@@ -26,7 +26,7 @@ Passed through to Smartlead as custom fields. The column name becomes the merge 
 
 ## Not allowed
 
-Any column not listed above will cause the script to abort with a clear error. This is intentional — it prevents:
+Any column not listed above will cause the script to abort with a clear error. This is intentional, it prevents:
 - Accidental PII columns (addresses, phone, DOB, etc) being uploaded
 - Misspelled custom field names that fail silently in Smartlead
 - Schema drift where the copywriter uses merge fields the list doesn't have
@@ -48,4 +48,4 @@ Run `/list-quality-scorecard` first. Confirm:
 - ICP fit ≥ 80%
 - Letter grade ≥ B
 
-If grade < C, don't upload — fix the list first.
+If grade < C, don't upload, fix the list first.

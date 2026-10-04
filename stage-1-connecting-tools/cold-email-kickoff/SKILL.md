@@ -19,7 +19,7 @@ The single entry point for a fresh user. Replaces "stare at 29 skills and guess 
 - A populated `profiles/<business-slug>/client-profile.yaml` (from `/icp-onboarding`)
 - A `profiles/<business-slug>/lead-magnets.md` with the chosen free offer
 - A `profiles/<business-slug>/campaign-strategy.md` with 15-25 campaign ideas
-- A consolidated `profiles/<business-slug>/campaign-plan.md` — a single-page summary you can show stakeholders
+- A consolidated `profiles/<business-slug>/campaign-plan.md`, a single-page summary you can show stakeholders
 - An interactive menu pointing at the right next skill based on your infrastructure status
 
 ## Flow
@@ -46,7 +46,7 @@ Check for `profiles/<business-slug>/client-profile.yaml`:
 Check the loaded/created profile for a `lead_magnet` field:
 
 - **Empty** → invoke `/lead-magnet-brainstorm`. It asks 4 intake questions, scores 10 magnet archetypes, picks a top 2-3, updates the profile.
-- **Already set** → confirm with the user: "Using `<chosen magnet>` as your free offer. OK?" — if they want to change it, re-invoke `/lead-magnet-brainstorm`.
+- **Already set** → confirm with the user: "Using `<chosen magnet>` as your free offer. OK?", if they want to change it, re-invoke `/lead-magnet-brainstorm`.
 
 ### Step 4: Generate campaign strategy
 
@@ -59,7 +59,7 @@ Saved to `profiles/<slug>/campaign-strategy.md`.
 Pull from all three artifacts above. Write `profiles/<slug>/campaign-plan.md`:
 
 ```markdown
-# Campaign Plan — <business name>
+# Campaign Plan, <business name>
 Generated: YYYY-MM-DD
 
 ## Business
@@ -80,9 +80,9 @@ Website: <url>
 - Delivery: <how you deliver it>
 
 ## Top 3 Recommended Campaigns (from /campaign-strategy)
-1. **<name>** — <one-line why + value prop>
-2. **<name>** — <one-line why + value prop>
-3. **<name>** — <one-line why + value prop>
+1. **<name>**, <one-line why + value prop>
+2. **<name>**, <one-line why + value prop>
+3. **<name>**, <one-line why + value prop>
 
 Full strategy in: profiles/<slug>/campaign-strategy.md
 
@@ -95,7 +95,7 @@ Based on your Step 1 answers:
 - [ ] Inboxes warmed 2+ weeks: <yes/no>
 
 ## Next Steps
-<branched — see Step 6 below>
+<branched, see Step 6 below>
 ```
 
 ### Step 6: Interactive next-skill menu
@@ -110,7 +110,7 @@ to warm). Menu:
 
 [A] Start the domain + inbox setup NOW  → /zapmail-domain-setup-public then /smartlead-inbox-manager
 [B] Save the plan and come back after I have infra
-[C] I want to build my list FIRST (warning: risky — without warmed inboxes, you can't send safely)
+[C] I want to build my list FIRST (warning: risky, without warmed inboxes, you can't send safely)
 
 Pick A / B / C:
 ```
@@ -149,7 +149,7 @@ Print the `campaign-plan.md` path. Offer `open <path>` if macOS.
 
 Without kickoff, a new user opens the repo, sees 29 skills, and has no idea which to run first. Every single new operator asks the same question ("where do I start?") and the answer is identical. This skill is that answer, codified.
 
-Also: putting the infrastructure question FIRST prevents the most common failure mode — someone writes beautiful copy, builds a great list, then realizes they can't send because they have no warmed inboxes.
+Also: putting the infrastructure question FIRST prevents the most common failure mode, someone writes beautiful copy, builds a great list, then realizes they can't send because they have no warmed inboxes.
 
 ## What to do next
 
@@ -159,15 +159,15 @@ Follow whichever branch your Step 6 menu selected. The skill hands you off clean
 
 ## Related skills
 
-- `/icp-onboarding` — invoked in step 2 (scrapes website + interviews)
-- `/lead-magnet-brainstorm` — invoked in step 3 (picks free offer)
-- `/campaign-strategy` — invoked in step 4 (15-25 campaign ideas)
-- `/zapmail-domain-setup-public` — offered in step 6 if no infra
-- `/smartlead-inbox-manager` — offered in step 6 after domain setup
-- `/prospeo-full-export`, `/disco-like`, `/google-maps-list-builder`, `/blitz-list-builder`, `/competitor-engagers` — offered in step 6 if infra ready
+- `/icp-onboarding`, invoked in step 2 (scrapes website + interviews)
+- `/lead-magnet-brainstorm`, invoked in step 3 (picks free offer)
+- `/campaign-strategy`, invoked in step 4 (15-25 campaign ideas)
+- `/zapmail-domain-setup-public`, offered in step 6 if no infra
+- `/smartlead-inbox-manager`, offered in step 6 after domain setup
+- `/prospeo-full-export`, `/disco-like`, `/google-maps-list-builder`, `/blitz-list-builder`, `/competitor-engagers`, offered in step 6 if infra ready
 
 ## References
 
-- `references/example-campaign-plans/b2b-saas.md` — sample campaign plan for a B2B SaaS client
-- `references/example-campaign-plans/smb-restaurant.md` — sample for a local restaurant chain
-- `references/example-campaign-plans/agency.md` — sample for a marketing agency
+- `references/example-campaign-plans/b2b-saas.md`, sample campaign plan for a B2B SaaS client
+- `references/example-campaign-plans/smb-restaurant.md`, sample for a local restaurant chain
+- `references/example-campaign-plans/agency.md`, sample for a marketing agency

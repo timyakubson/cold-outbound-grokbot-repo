@@ -6,7 +6,7 @@
 --
 -- 1. Create the table in any Postgres database (Supabase works, so does plain Postgres).
 -- 2. Export the connection string:  LIST_REGISTRY_DB_URL=<your postgres connection string>
--- 3. `psql` must be on PATH — registry.ts shells out to it.
+-- 3. `psql` must be on PATH, registry.ts shells out to it.
 
 CREATE TABLE IF NOT EXISTS list_builder_judged_domains (
   domain          text        NOT NULL,   -- normalized apex, the dedup key
