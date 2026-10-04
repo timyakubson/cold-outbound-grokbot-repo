@@ -9,6 +9,8 @@ Before outputting ANY email copy, you must:
 
 Do not skip this gate, even if the user asks for copy directly. If they insist, state which template you used and why in one line, then proceed.
 
+> **LinkedIn DMs:** Before writing any LinkedIn message, load and follow `stage-6-copywriting/linkedin-dm-framework/SKILL.md`. Never draft connection request notes.
+
 Also obey `stage-6-copywriting/no-em-dashes/SKILL.md`: never output em dashes or en dashes.
 
 ---

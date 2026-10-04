@@ -79,3 +79,4 @@ close to untouched since it's provider-agnostic and didn't need a swap.
   (adapted from [skill-deslop](https://github.com/stephenturner/skill-deslop), MIT).
 - **Template gate before email copy.** `campaign-copywriting` requires 3-4 recommended templates
   from `stage-6-copywriting/cold-email-templates/` before writing any email.
+- **LinkedIn DMs.** `stage-6-copywriting/linkedin-dm-framework` requires the 5-message DM structure before any LinkedIn message is written, and forbids connection request notes.
